@@ -1,0 +1,35 @@
+.container-grid{
+    margin: 0 auto;
+    width: 100vh;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+
+.col-4{
+    flex-basis: 100%;
+}
+.col-1{
+    flex-basis: 25%;
+}
+
+table{
+    background: var(--color-bg2);
+    width: 100%;
+    padding: 1em;
+}
+
+table th{
+    background: var(--color-bg);
+}
+
+.positive{
+    color: greenyellow;
+}
+.negative{
+    color: rgb(255, 0, 0);
+}
