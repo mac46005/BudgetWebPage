@@ -32,6 +32,7 @@ body{
 
 header{
     height: 4rem;
+    background:rgba(0, 36, 198, 0.725);
 }
 
 .header-container{

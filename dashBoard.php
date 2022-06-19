@@ -12,9 +12,9 @@
 </head>
 
 <body>
-    <nav>
+<nav>
         <div class="nav-container">
-            <h4><a href="#">BudgetApp</a></h4>
+            <h4><a href="./dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
                 <li><a href="./manageTypeIndex.html">Manage Types</a></li>
@@ -59,11 +59,11 @@
                 </tr>
                 <tr>
                     <td>Danielle</td>
-                    <td class="negative">$33.33</td>
+                    <td class="positive">$33.33</td>
                 </tr>
                 <tr>
                     <td>Marco</td>
-                    <td class="negative">$22.33</td>
+                    <td class="positive">$22.33</td>
                 </tr>
             </table>
         </section>
@@ -75,11 +75,11 @@
                 </tr>
                 <tr>
                     <td>Marco</td>
-                    <td>$45.55</td>
+                    <td><span class="negative">$33.22</span></td>
                 </tr>
                 <tr>
                     <td>Danielle</td>
-                    <td>$233.33</td>
+                    <td><span class="negative">$444.44</span></td>
                 </tr>
             </table>
         </section>

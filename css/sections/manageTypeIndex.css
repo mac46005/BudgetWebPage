@@ -9,6 +9,8 @@
     flex-basis: 40%;
     background: var(--color-bg2);
     text-align: center;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
     border-bottom-left-radius: .2em;
     border-bottom-right-radius: .2em;
 }
