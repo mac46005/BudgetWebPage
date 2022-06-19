@@ -1,0 +1,22 @@
+.main-container{
+    display: flex;
+    gap: 1em;
+}
+.main-container section{
+    flex-basis: 50%;
+    background: var(--color-bg2);
+    text-align: center;
+}
+.main-container section header{
+    height: 3rem;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    background: var(--color-bg);
+}
+.main-container section a{
+    display: inline-block;
+    padding: 1em 2em;
+    color: var(--color-white);
+    background: var(--color-bg1);
+    margin: 1em 0;
+}

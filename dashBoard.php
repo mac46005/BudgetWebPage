@@ -15,11 +15,13 @@
     <nav>
         <div class="nav-container">
             <h4><a href="#">BudgetApp</a></h4>
+
+            <ul class="nav-menu">
+                <li><a href="./manageTypeIndex.html">Manage Types</a></li>
+                <li><a href="#">Mng Income</a></li>
+                <li><a href="#">Mng Expense</a></li>
+            </ul>
         </div>
-        <ul class="nav-menu">
-            <li><a href="#">Mng Income</a></li>
-            <li><a href="#">Mng Expense</a></li>
-        </ul>
     </nav>
 
     <header>
@@ -29,7 +31,7 @@
     </header>
 
     <div class="container-grid">
-        
+
         <main id="montly-summary" class="index-main-summary col-4">
             <table>
                 <tr>

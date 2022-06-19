@@ -18,7 +18,7 @@
 
     --container-sz-sm: 80%;
     --container-sz-md: 85%;
-    --container-sz-sm: 80%;
+    --container-sz-sm: 90%;
 
     --transition: all 1s ease-in-out;
 }
@@ -28,6 +28,15 @@ body{
     color: var(--color-white);
 }
 
+
+
+header{
+    height: 4rem;
+}
+
 .header-container{
-    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;height: 100%;
+
 }

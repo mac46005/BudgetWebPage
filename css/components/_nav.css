@@ -1,0 +1,15 @@
+nav{
+    height: 3rem;
+    background: var(--color-bg);
+}
+.nav-container{
+    min-width: var(--container-sz-lg);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.nav-menu{
+    display: flex;
+    gap: 1em;
+}

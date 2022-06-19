@@ -37,13 +37,13 @@ table th{
 #dti h4{
     padding: 1rem .2rem;
 }
-#dti h4:nth-child(0){
+#dti h4:nth-child(1){
     background: var(--color-bg);
 }
-#dti h4:nth-child(1){
+#dti h4:nth-child(2){
     background: var(--color-bg1);
 }
 
-#dti h4:nth-child(2){
+#dti h4:nth-child(3){
     background: var(--color-bg2);
 }
