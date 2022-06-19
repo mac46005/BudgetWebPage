@@ -1,11 +1,16 @@
 .main-container{
     display: flex;
+    flex-wrap: wrap;
     gap: 1em;
 }
 .main-container section{
-    flex-basis: 50%;
+    width: var(--container-sz-lg);
+    margin: 0 auto;
+    flex-basis: 40%;
     background: var(--color-bg2);
     text-align: center;
+    border-bottom-left-radius: .2em;
+    border-bottom-right-radius: .2em;
 }
 .main-container section header{
     height: 3rem;
@@ -18,5 +23,17 @@
     padding: 1em 2em;
     color: var(--color-white);
     background: var(--color-bg1);
+    border-radius: .3em;
     margin: 1em 0;
+}
+
+@media screen and (max-width: 600px){
+    .main-container section{
+        flex-basis: 100%;
+    }
+
+}
+
+.main-container section a:hover,.main-container section a:focus{
+    background: var(--color-bg);
 }
