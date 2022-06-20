@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if(isset($_SESSION['addedItem'])){
+    echo "New item added";
+}
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,7 +39,7 @@
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="./add_edit_incometype.html">Add Item</a></li>
+                        <li><a href="./add_edit_incometype.php?formTypeName=Add">Add Item</a></li>
                         <li><a href="#">Income Sub Types</a></li>
                         <li><a href="#"></a></li>
                     </ul>

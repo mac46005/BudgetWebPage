@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php
+    $formTypeName = $_GET['formTypeName'];
+    ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add / edit Income Type</title>
+    <title><?php echo $formTypeName; ?> Income Type</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/components/_nav.css">
     <link rel="stylesheet" href="../css/components/_forms.css">
@@ -24,12 +27,12 @@
     </nav>
     <header>
         <div class="header-container">
-            <h1>Add/Edit Income Type</h1>
+            <h1><?php echo $formTypeName; ?> Income Type</h1>
         </div>
     </header>
     <main>
         <div class="main-container">
-            <form action="../script/">
+            <form action="../script/incomeTypeDBAccess.php">
                 <label for="id">ID:</label>
                 <input type="text" name="id" id="id" placeholder="0" disabled>
 
