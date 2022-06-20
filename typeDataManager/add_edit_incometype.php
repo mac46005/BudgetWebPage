@@ -33,6 +33,8 @@
     <main>
         <div class="main-container">
             <form action="../script/incomeTypeDBAccess.php">
+                <input type="text" name="dbManipulationType" id="" value="<?php echo $formTypeName; ?>" hidden>
+
                 <label for="id">ID:</label>
                 <input type="text" name="id" id="id" placeholder="0" disabled>
 

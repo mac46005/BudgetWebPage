@@ -28,6 +28,7 @@ function writeData(){
         $tsql = "INSERT INTO [IncomeTypes] (name) VALUES($name)";
         $insertIncomeType = sqlsrv_query($conn, $tsql);
         if($insertIncomeType == FALSE){
+            echo "failed to write to sql server";
             die(FormatErrors($sqlsrv_errors()));
         }else{
             echo "Successfully added income item";
@@ -45,13 +46,13 @@ function updateData(){
 }
 function IncomeManipulation(){
     switch($dbManipType){
-        case "read":
+        case "Read":
             readData();
             break;
-        case "write":
+        case "Add":
             writeData();
             break;
-        case "update":
+        case "Edit":
             updateData();
             break;
     }
