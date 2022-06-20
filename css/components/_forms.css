@@ -1,0 +1,47 @@
+form{
+    background: rgba(125, 0, 125, 0.871);
+    padding: 1em 2em;
+    animation: glowFormBorder;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes glowFormBorder {
+    0%{
+        border:2px solid rgb(199, 0, 199)
+    }
+    50%{
+        border:2px solid rgb(199, 0, 199,0)
+    }
+    100%{
+        border: 2px solid rgb(199, 0, 199)
+    }
+    
+}
+form label{
+    display: block;
+}
+form input{
+    display: block;
+    margin-bottom: 1rem;
+}
+
+form input[type="text"]{
+    font-size: 1.2rem;
+    border-radius: .3em;
+}
+form input[type="submit"]{
+    padding: 1em 2em;
+    background: linear-gradient(to bottom, blue, rgb(0, 0, 190));
+    border-color: transparent;
+    border-radius: 1.2em;
+}
+
+form input[type="submit"]:hover{
+    background: linear-gradient(to bottom, blue,rgb(3, 3, 237));
+}
+
+form input[type="submit"].disabled{
+    background: linear-gradient(to bottom, gray, rgb(92, 92, 92))
+
+}

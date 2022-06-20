@@ -49,9 +49,13 @@
 .dashboard table tbody td a.btn-edt{
     background: var(--color-warning);
 }
-
+.dashboard table tbody td a:hover,.dashboard table tbody td a:focus{
+    background: rgb(181, 117, 0);
+}
 .dashboard table tbody td a.btn-dlt{
     background: var(--color-danger);
 }
-
+.dashboard table tbody td a.btn-dlt:hover, .dashboard table tbody td a.btn-dlt:focus{
+    background: rgb(198, 1, 1);
+}
 
