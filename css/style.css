@@ -9,6 +9,9 @@
 :root{
     --color-primary: #ffffff;
     --color-secondary: #ffb300;
+    --color-danger: red;
+    --color-warning: orange;
+    --color-success: limegreen;
     --color-black: rgb(0, 0, 0);
     --color-white: #ffffff;
     --color-bg: #b00000dd;
@@ -40,4 +43,12 @@ header{
     justify-content: center;
     align-items: center;height: 100%;
 
+}
+
+
+
+.btn{
+    padding: 1rem;
+    border-radius: 1em;
+    color: var(--color-black);
 }

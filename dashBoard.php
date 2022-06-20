@@ -12,12 +12,12 @@
 </head>
 
 <body>
-<nav>
+    <nav>
         <div class="nav-container">
             <h4><a href="./dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./manageTypeIndex.html">Manage Types</a></li>
+                <li><a href="./typeDataManager/manageTypeIndex.html">Manage Types</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
