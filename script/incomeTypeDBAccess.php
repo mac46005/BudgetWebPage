@@ -3,19 +3,22 @@
 session_start();
 $dbManipType = $_GET['dbManipulationType'];
 
-
+echo "dbManipType: " . $dbManipType;
 
 $name = $_GET['name'];
+
+echo "name:" . $name;
 $redirectPage = "location:../typeDataManager/incomeTypeData.php";
 function OpenConnection() {
     $serverName = "tcp:myserver.database.windows.net,1433";
-    $connectionOptions = array("Database" => "", "Uid" =>"User", "PWD"=>"");
+    $connectionOptions = array("Database" => "BudgetWP_DB");
     $conn = sqlsrv_connect($serverName, $connectionOptions);
     if($conn == false){
         die(FormatErrors(sqlsrv_errors()));
-
-        return $conn;
+        echo FormatErrors(sqlsrv_errors());
+        
     }
+    return $conn;
 }
 
 function readData(){
@@ -25,7 +28,7 @@ function readData(){
 function writeData(){
     try{
         $conn = OpenConnection();
-        $tsql = "INSERT INTO [IncomeTypes] (name) VALUES($name)";
+        $tsql = "INSERT INTO [Income_Types] (name) VALUES($name)";
         $insertIncomeType = sqlsrv_query($conn, $tsql);
         if($insertIncomeType == FALSE){
             echo "failed to write to sql server";
@@ -44,7 +47,8 @@ function writeData(){
 function updateData(){
 
 }
-function IncomeManipulation(){
+function IncomeManipulation($dbManipType){
+
     switch($dbManipType){
         case "Read":
             readData();
@@ -58,5 +62,5 @@ function IncomeManipulation(){
     }
 }
 
-
+IncomeManipulation($dbManipType);
 ?>
