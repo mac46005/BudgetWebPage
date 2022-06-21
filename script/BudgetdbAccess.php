@@ -1,5 +1,11 @@
 <?php
 
+class HTML_Messages{
+    public function Error($header,$error): string{
+
+    }
+}
+
 
 interface IManipulateData{
     public function ManipulateData($dataMode,$item);
@@ -41,12 +47,16 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
 
 class CRUD_Result{
     private $message;
-    private $item;
+    private $item = NULL;
+    public $isComplete = FALSE;
 
-
-    function __construct(){
-
+    function __construct($message,$item = NULL,$isComplete = FALSE){
+        $this->message = $message;
+        $this->item = $item;
+        $this->isComplete = $isComplete;
     }
+
+
 }
 
 
@@ -72,18 +82,16 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     private $dataMode;
     private User $item;
-
+    private CRUD_Result $crudResult;
     function __construct($dataMode,User $item){
         $this->dataMode = $dataMode;
         $this->item = $item;
-        echo "In UsersDbAccess Constructor";
-        $this->ManipulateData($dataMode,$item);
+
+        $this->crudResult = new CRUD_Result($this->item);
     }
 
-
-    public function Write($item){
+    public function Write($item): CRUD_Result{
         $conn;
-        $isSuccessfull = FALSE;
         try{
             $conn = $this->Connect();
 
@@ -91,7 +99,8 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
             $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$item->username','$item->password','$item->firstName','$item->lastName','$item->dob','$item->ssn','$today','$today')";
 
             if($conn->query($sql)){
-                $isSuccessfull = TRUE;
+                $crudResult->isComplete = TRUE;
+                $crudResult->message = "UsersDBAccess successfully WRITE to database";
             }else{
                 throw new Exception($conn->error);
             }
@@ -120,7 +129,7 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     }
 
-    public function ManipulateData($dataMode,$item){
+    public function ManipulateData($dataMode,$item): CRUD_Result{
         // dataManipOptions = readOne,readAll,write,update,delete
         switch($dataMode){
             case self::dataManipOptions[0]:
