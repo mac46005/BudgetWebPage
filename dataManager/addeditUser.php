@@ -3,6 +3,7 @@
 <head>
     <?php
     $formTypeName = $_GET['formTypeName'];
+    $dataMode = ($formTypeName == "Add")? "write" : "update";
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,8 +36,8 @@
     </header>
     <main>
         <div class="main-container">
-            <form action="../script/usersDataDBAccess.php?manipOption=write">
-                <input class="hide" type="text" name="dataMode" id="dataMode" value="write" >
+            <form method="post" action="../script/usersDataDBAccess.php">
+                <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>" >
                 <input class="hide" type="text" name="id" id="id">
 
                 <label for="username">Username:</label>

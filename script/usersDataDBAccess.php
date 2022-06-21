@@ -1,19 +1,31 @@
 <?php
-include("../script/dbAccess.php");
+require "../script/BudgetdbAccess.php";
+echo "UsersDataDbAccess <br>";
+$dataMode = $_REQUEST['dataMode'];
+echo $dataMode . "<br>";
+$username = $_REQUEST['username'];
+$password = $_REQUEST['password'];
+$firstName = $_REQUEST['firstName'];
+$lastName = $_REQUEST['lastName'];
+$dob = $_REQUEST['dob'];
+$ssn = $_REQUEST['ssn'];
 
-$dataMode = $_GET['dateMode'];
+
+$brk = "<br>";
+echo $username . $brk ;
+echo $password . $brk;
+echo $firstName . $brk;
+echo $lastName . $brk;
+echo $dob . $brk;
+echo $ssn . $brk;
+
+$user = new User($username, $password, $firstName, $lastName, $dob, $ssn);
 
 
-$username = $_GET['username'];
-$password = $_GET['password'];
-$firstName = $_GET['firstName'];
-$lastName = $_GET['lastName'];
-$dob = $_GET['dob'];
-$ssn = $_GET['ssn'];
-$dateCreated = $_GET['dateCreated'];
-$dateModified = $_GET['dateModified'];
+echo "PERSON CLASS PROPERTY VALUES";
+echo $user;
+echo "END OF PERSON CLASS PROP VALS";
 
-$user = new User($username, $password, $firstName, $lastName, $dob, $ssn, $dateCreated, $dateModified);
 
 $usersDBAccess = new UsersDBAccess($dataMode,$user);
 

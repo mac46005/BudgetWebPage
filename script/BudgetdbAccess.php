@@ -2,7 +2,7 @@
 
 
 interface IManipulateData{
-    public function ManipulateData();
+    public function ManipulateData($dataMode,$item);
 }
 abstract class ManipulateData implements IManipulateData{
     const dataManipOptions = [
@@ -12,7 +12,6 @@ abstract class ManipulateData implements IManipulateData{
         "update",
         "delete"
     ];
-    public abstract function ManipulateData();
 }
 
 
@@ -40,6 +39,15 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
 
 }
 
+class CRUD_Result{
+    private $message;
+    private $item;
+
+
+    function __construct(){
+
+    }
+}
 
 
 
@@ -60,15 +68,15 @@ interface IDb_CRUD{
 
 
 
-class UsersDBAccess extends AccessMySql{
+class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     private $dataMode;
     private User $item;
 
-    function __contructor($dataMode,User $item){
+    function __construct($dataMode,User $item){
         $this->dataMode = $dataMode;
         $this->item = $item;
-
+        echo "In UsersDbAccess Constructor";
         $this->ManipulateData($dataMode,$item);
     }
 
@@ -79,16 +87,15 @@ class UsersDBAccess extends AccessMySql{
         try{
             $conn = $this->Connect();
 
-            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$item->username','$item->password','$item->firstName',$item->lastName','$item->dob','$item->ssn','$item->dateCreated','$item->dateModified')";
+            $today = date("Y-m-d");
+            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$item->username','$item->password','$item->firstName','$item->lastName','$item->dob','$item->ssn','$today','$today')";
 
             if($conn->query($sql)){
                 $isSuccessfull = TRUE;
-                console.log("UsersDBAccess Successfully WRITES to database");
             }else{
-                throw new Exception($conn->errors);
+                throw new Exception($conn->error);
             }
         }catch(\Exception $e){
-            console.danger($e);
             $isSuccessfull = FALSE;
         }finally{
             $conn->close();
@@ -116,18 +123,23 @@ class UsersDBAccess extends AccessMySql{
     public function ManipulateData($dataMode,$item){
         // dataManipOptions = readOne,readAll,write,update,delete
         switch($dataMode){
-            case $this->dataManipOptions[0]:
+            case self::dataManipOptions[0]:
+                echo "readone";
                 $this->ReadOne($this->item->id);
                 break;
-            case $this->dataManipOptions[1]:
+            case self::dataManipOptions[1]:
+                echo "readAll";
                 $this->ReadAll();
                 break;
-            case $this->dataManipOptions[2]:
+            case self::dataManipOptions[2]:
+                echo "write";
                 $this->Write($this->item);
-            case $this->dataManipOptions[3]:
+            case self::dataManipOptions[3]:
+                echo "update";
                 $this->Update($this->item);
                 break;
-            case $this->dataManipOptions[4]:
+            case self::dataManipOptions[4]:
+                echo "delete";
                 $this->Delete($this->item->id);
                 break;
         }
@@ -148,7 +160,9 @@ class User{
     public $dateCreated;
     public $dateModified;
 
-    function __contructor($username = 0, $password = "", $firstName = "", $lastName = "", $dob = "", $ssn = "", $dateCreated = "", $dateModified = ""){
+    function __construct($username = 0, $password = "", $firstName = "", $lastName = "", $dob = "", $ssn = "", $dateCreated = "", $dateModified = ""){
+        
+
         $this->username = $username;
         $this->password = $password;
         $this->firstName = $firstName;
@@ -157,6 +171,21 @@ class User{
         $this->ssn = $ssn;
         $this->dateCreated = $dateCreated;
         $this->dateModified = $dateModified;
+    }
+
+    function __toString(){
+        $brk = "<br/>";
+        $toString = "";
+        $toString .= $this->username . $brk;
+        $toString .= $this->password . $brk;
+        $toString .= $this->firstName . $brk;
+        $toString .= $this->lastName . $brk;
+        $toString .= $this->dob . $brk;
+        $toString .= $this->ssn . $brk;
+        $toString .= $this->dateCreated . $brk;
+        $toString .= $this->dateModified . $brk;
+
+        return $toString;
     }
 }
 
