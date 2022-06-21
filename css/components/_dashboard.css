@@ -4,7 +4,7 @@
 }
 .dashboard nav{
     display: flex;
-    justify-content: ;
+    justify-content: space-between;
 }
 
 .dashboard nav ul{
@@ -14,10 +14,14 @@
 }
 
 .dashboard nav ul li a{
-    background: blue;
+    background: red;
+    color: var(--color-black);
     padding: 1rem 1rem;
+    border-radius: 1em solid red;
 }
-
+.dashboard nav ul li a:hover, dashboard nav ul li a:focus{
+    background: rgb(209, 0, 0);
+}
 
 .dashboard table{
     width: 100%;

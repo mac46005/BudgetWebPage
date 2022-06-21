@@ -22,7 +22,7 @@ if(isset($_SESSION['addedItem'])){
             <h4><a href="../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./manageTypeIndex.html">Manage Types</a></li>
+                <li><a href="./DataManagerHome.html">Data Manager</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
@@ -30,7 +30,7 @@ if(isset($_SESSION['addedItem'])){
     </nav>
     <header>
         <div class="header-container">
-            <h1>Users Data Manager</h1>
+            <h1>Income Type Data Manager</h1>
         </div>
     </header>
     <main>
@@ -39,7 +39,7 @@ if(isset($_SESSION['addedItem'])){
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="./add_edit_incometype.php?formTypeName=Add">Add User</a></li>
+                        <li><a href="./addEditIncomeType.php?formTypeName=Add">Add Item</a></li>
                         <li><a href="#">Income Sub Types</a></li>
                         <li><a href="#"></a></li>
                     </ul>
@@ -49,31 +49,21 @@ if(isset($_SESSION['addedItem'])){
                     <thead>
                         <tr>
                             <th>id</th>
-                            <th>username</th>
-                            <th>password</th>
-                            <th>firstName</th>
-                            <th>lastName</th>
-                            <th>dob</th>
-                            <th>ssn</th>
-                            <th>dateCreated</th>
-                            <th>dateModified</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>name</th>
+                            <th>Date Created</th>
+                            <th>Date Modified</th>
+                            <th>edit</th>
+                            <th>delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>mac46005</td>
-                            <td>4600</td>
-                            <td>Marco</td>
-                            <td>Preciado</td>
-                            <td>12-19-1992</td>
-                            <td>111-11-1111</td>
-                            <td>02-23-2022</td>
-                            <td>04-12-2022</td>
-                            <td><a href="#" class="btn btn-edt">Edit</a></td>
-                            <td><a href="#" class="btn btn-dlt">Delete</a></td>
+                            <td>Self-Employed</td>
+                            <td>12-23-22</td>
+                            <td>11-33-23</td>
+                            <td><a class="btn btn-edt" href="#">Edit</a></td>
+                            <td><a class="btn btn-dlt" href="#">Delete</a></td>
                         </tr>
                         
                     </tbody>
