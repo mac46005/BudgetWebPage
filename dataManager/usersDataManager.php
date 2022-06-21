@@ -39,7 +39,7 @@ if(isset($_SESSION['addedItem'])){
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="../dataManager/addeditusers.php?formTypeName=Add">Add User</a></li>
+                        <li><a href="../dataManager/addedituser.php?formTypeName=Add">Add User</a></li>
                         <li>
                     </ul>
                 </nav>
