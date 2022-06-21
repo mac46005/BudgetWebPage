@@ -4,6 +4,7 @@
 }
 .dashboard nav{
     display: flex;
+    justify-content: ;
 }
 
 .dashboard nav ul{
@@ -11,6 +12,12 @@
     gap: 1rem;
     align-items: center;
 }
+
+.dashboard nav ul li a{
+    background: blue;
+    padding: 1rem 1rem;
+}
+
 
 .dashboard table{
     width: 100%;

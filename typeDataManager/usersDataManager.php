@@ -30,7 +30,7 @@ if(isset($_SESSION['addedItem'])){
     </nav>
     <header>
         <div class="header-container">
-            <h1>Income Type Data Manager</h1>
+            <h1>Users Data Manager</h1>
         </div>
     </header>
     <main>
@@ -39,7 +39,7 @@ if(isset($_SESSION['addedItem'])){
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="./add_edit_incometype.php?formTypeName=Add">Add Item</a></li>
+                        <li><a href="./add_edit_incometype.php?formTypeName=Add">Add User</a></li>
                         <li><a href="#">Income Sub Types</a></li>
                         <li><a href="#"></a></li>
                     </ul>
