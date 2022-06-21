@@ -65,15 +65,15 @@ class CRUD_Result{
 
 interface IDb_CRUD{
     //@param T $item
-    public function Write($item);
+    public function Write($item): CRUD_Result;
 
-    public function ReadAll();
+    public function ReadAll(): CRUD_Result;
 
-    public function ReadOne($id);
+    public function ReadOne($id): CRUD_Result;
 
-    public function Update($item);
+    public function Update($item): CRUD_Result;
 
-    public function Delete($id);
+    public function Delete($id): CRUD_Result;
 }
 
 
@@ -105,27 +105,28 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
                 throw new Exception($conn->error);
             }
         }catch(\Exception $e){
-            $isSuccessfull = FALSE;
+            $crudResult->isComplete = FALSE;
+            $crudResult->message = $conn->error;
         }finally{
             $conn->close();
         }
 
-        return $isSuccessfull;
+        return $crudResult;
 
     }
-    public function ReadAll(){
-
-    }
-
-    public function ReadOne($id){
+    public function ReadAll(): CRUD_Result{
 
     }
 
-    public function Update($item){
+    public function ReadOne($id): CRUD_Result{
 
     }
 
-    public function Delete($id){
+    public function Update($item): CRUD_Result{
+
+    }
+
+    public function Delete($id):CRUD_Result{
 
     }
 
