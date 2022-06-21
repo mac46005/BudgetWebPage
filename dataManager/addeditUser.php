@@ -36,7 +36,8 @@
     <main>
         <div class="main-container">
             <form action="../script/usersDataDBAccess.php?manipOption=write">
-                <input type="text" name="id" id="id" hidden>
+                <input class="hide" type="text" name="dataMode" id="dataMode" value="write" >
+                <input class="hide" type="text" name="id" id="id">
 
                 <label for="username">Username:</label>
                 <input type="text" name="username" id="username">

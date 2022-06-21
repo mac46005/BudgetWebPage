@@ -1,39 +1,20 @@
 <?php
-include("./accessMySql.php");
-include("./dbCRUD_Interface.php");
-class UsersDataDbAccess implements IDB_CRUD{
-    private $manipOption = "";
+include("../script/dbAccess.php");
 
-    function __constructor($manipOption){
-        $this->manipOption = $manipOption;
-    }
-
-    public function Write($userName,$password,$firstName,$lastName,$dob,$ssn){
-        try {
-            $conn = $this->createConnection()->Connect();
-
-            $today = date("Y-m-d");
-            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES ('$userName','$password','$firstName','$lastName','$dob','$ssn','$today','$today')";
-
-            if($conn->query($sql)){
-                throw new Exception("successfully added user");
-            }else{
-                throw new Exception($conn->error);
-            }
-        } catch (\Throwable $e) {
-            echo $e;
-        }finally{
-            $conn->close();
-        }
-        
-    }
-
-    
+$dataMode = $_GET['dateMode'];
 
 
-    private function createConnection(){
-        return new AccessMySql();
-    }
-}
+$username = $_GET['username'];
+$password = $_GET['password'];
+$firstName = $_GET['firstName'];
+$lastName = $_GET['lastName'];
+$dob = $_GET['dob'];
+$ssn = $_GET['ssn'];
+$dateCreated = $_GET['dateCreated'];
+$dateModified = $_GET['dateModified'];
+
+$user = new User($username, $password, $firstName, $lastName, $dob, $ssn, $dateCreated, $dateModified);
+
+$usersDBAccess = new UsersDBAccess($dataMode,$user);
 
 ?>

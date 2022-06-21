@@ -52,3 +52,7 @@ header{
     border-radius: 1em;
     color: var(--color-black);
 }
+
+.hide{
+    display: none;
+}
