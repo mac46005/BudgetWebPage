@@ -23,11 +23,29 @@ $crudResult = $usersDBAccess->ManipulateData();
 session_start();
 $_SESSION['crudResult'] = $crudResult;
 if($crudResult != NULL){
-    if($crudResult->isComplete == FALSE){
-        header("location:../dataManager/addEditUser.php");
-    }else{
-        header("location:../dataManager/usersDataManager.php");
+    switch($crudResult->crudType){
+        case "readOne":
+            break;
+        case "readAll":
+            break;
+        case "write":
+            if($crudResult->isComplete == FALSE){
+                header("location:../dataManager/addEditUser.php");
+            }else{
+                header("location:../dataManager/usersDataManager.php");
+            }
+            break;
+        case "update":
+            if($crudResult->isComplete == FALSE){
+                header("location:../dataManager/addEditUser.php");
+            }else{
+                header("location:../dataManager/usersDataManager.php");
+            }
+            break;
+        case "delete":
+            header("location:../datamanager/usersDataManager.php");
     }
+    
 }
 
 ?>

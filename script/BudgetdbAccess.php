@@ -5,12 +5,14 @@
  * @author Marco Preciado
  */
 class CRUD_Result{
+    public $crudType = "";
     public $title;
     public $message;
     public $object = NULL;
     public $isComplete = FALSE;
 
-    function __construct($title = "",$message = "",$object = NULL,$isComplete = FALSE){
+    function __construct($title = "",$message = "",$crudType = "",$object = NULL,$isComplete = FALSE){
+        $this->crudType = $crudType;
         $this->title = $title;
         $this->message = $message;
         $this->object = $object;
@@ -88,8 +90,7 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
     function __construct($dataMode,$object = NULL){
         $this->dataMode = $dataMode;
         $this->object = $object;
-
-        $this->crudResult = new CRUD_Result("UsersDBAccess","",$object);
+        $this->crudResult = new CRUD_Result("UsersDBAccess","",$dataMode,$object);
     }
 
     public function Write($object): CRUD_Result{
@@ -158,12 +159,12 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
         try {
             $conn = $this->Connect();
             
-            $sql = "UPDATE users WHERE id = $id";
+            $sql = "UPDATE users WHERE id = '$id'";
             if($conn->query($sql)){
                 $this->crudResult->message = "Successfully DELETE item from database";
                 $this->crudResult->isComplete = TRUE;
             }else{
-                $this->crudResult->message = "Sql failed to process information.";
+                $this->crudResult->message = $conn->error;
                 $this->crudResult->isComplete = FALSE;
             }
 
