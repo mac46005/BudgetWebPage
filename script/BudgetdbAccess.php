@@ -83,6 +83,7 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     private $dataMode;
     private $object;
+    const tableName = "users";
     private CRUD_Result $crudResult;
     function __construct($dataMode,$object = NULL){
         $this->dataMode = $dataMode;
@@ -124,7 +125,7 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
         try {
             $conn = $this->Connect();
             
-            $sql = "SELECT id,username,password,firstName,lastName,ssn,dateCreate,dateModified FROM users";
+            $sql = "SELECT id,username,password,firstName,lastName, dob,ssn,dateCreated,dateModified FROM users";
 
             if($result = $conn->query($sql)){
                 $this->crudResult->object = $result;
@@ -135,21 +136,25 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
             
         } catch (\Throwable $th) {
             $this->crudResult->message = $th;
-            $this->isComplete = FALSE;
+            $this->crudResult->isComplete = FALSE;
+        }finally{
+            $conn->close();
         }
         return $this->crudResult;
     }
 
     public function ReadOne($id): CRUD_Result{
 
+        return $this->crudResult;
+
     }
 
     public function Update($object): CRUD_Result{
-
+        return $this->crudResult;
     }
 
     public function Delete($id):CRUD_Result{
-
+        return $this->crudResult;
     }
 
     public function ManipulateData(): CRUD_Result{

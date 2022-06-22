@@ -54,7 +54,7 @@ if(isset($_SESSION['crudResult'])){
             <hr/>
             <h4>Extra Information</h4>
             <p>
-                $crudResult->item
+                $crudResult->object
             </p>
             <button id="closeCrudResult">Continue</button>
         </section>
@@ -96,35 +96,46 @@ if(isset($_SESSION['crudResult'])){
                         <?php
                         $usersDataDBAccess = new UsersDBAccess("readAll");
 
-                        $crudResult = $usersDataDBAccess->ManipulateData();
-
-                        if($crudResult->isComplete == TRUE){
-                            for ($i=0; $i < count($crudResult->item); $i++) { 
-                                $tableData = <<<DATA
+                        $tableCrudResult = $usersDataDBAccess->ManipulateData();
+                        
+                        if($tableCrudResult->isComplete == TRUE){
+                            while($row = $tableCrudResult->object->fetch_row()){
+                                $rowString = <<<ROW
                                 <tr>
-                                    <td>$crudResult->item[0]</td>
-                                    <td>$crudResult->item[1]</td>
-                                    <td>$crudResult->item[2]</td>
-                                    <td>$crudResult->item[3]</td>
-                                    <td>$crudResult->item[4]</td>
-                                    <td>$crudResult->item[5]</td>
-                                    <td>$crudResult->item[6]</td>
-                                    <td>$crudResult->item[7]</td>
-                                    <td><a href="./addeditUser.php?formTypeName=Update"
+                                    <td>$row[0]</td>
+                                    <td>$row[1]</td>
+                                    <td>$row[2]</td>
+                                    <td>$row[3]</td>
+                                    <td>$row[4]</td>
+                                    <td>$row[5]</td>
+                                    <td>$row[6]</td>
+                                    <td>$row[7]</td>
+                                    <td>$row[8]</td>
+                                    <td><a class="btn btn-edt" href="#">Edit</a></td>
+                                    <td><a class="btn btn-dlt" href="#">Delete</a></td>
                                 </tr>
-
-                                DATA;
+                                ROW;
+                                echo $rowString;
                             }
-                        }else{
+                        }
+                        else{
                             $crudMessageBox = <<<MESSAGE
-                            <section>
+                            <section class="crud-table-message failed">
+                                <h2>$tableCrudResult->title</h2>
+                                <p>$tableCrudResult->message</p>
+                                <hr/>
+                                <h4>Extra Information:</h4>
+                                <p></p>
+                                <button type="button" id="closeCrudTableMessage">Continue</button>
                             </section>
                             MESSAGE;
+
+                            echo $crudMessageBox;
                         }
                         ?>
+                        <script src="../script/crudTableMessage.js"></script>
                     </tbody>
                 </table>
-
             </form>
         </div>
     </main>

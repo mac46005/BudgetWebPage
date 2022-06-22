@@ -79,3 +79,14 @@ main section.crud-result.failed{
 main section.crud-result h2{
     font-size: 1.3rem;
 }
+
+.crud-table-message{
+    position: absolute;
+    top: 60%;
+}
+
+section.crud-table-message.failed{
+    padding: 1em;
+    border-radius: 1em;
+    background: var(--color-danger);
+}
