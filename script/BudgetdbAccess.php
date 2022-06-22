@@ -1,4 +1,33 @@
 <?php
+
+class MySqliServerInfo{
+    public $servername = "";
+    public $username = "";
+    public $password = "";
+    public $dbName = "";
+    function __construct($servername, $username, $password, $dbName)
+    {
+        $this->servername = $servername;
+        $this->username = $username;
+        $this->password = $password;
+        $this->dbName = $dbName;
+    }
+}
+
+interface IDb_CRUD{
+    //@param T $object
+    public function Write($object): CRUD_Result;
+
+    public function ReadAll(): CRUD_Result;
+
+    public function ReadOne($id): CRUD_Result;
+
+    public function Update($object): CRUD_Result;
+
+    public function Delete($id): CRUD_Result;
+}
+
+
 /**
  * A CRUD Operations Result object
  * @version ${1:1.0.0}
@@ -25,7 +54,15 @@ class CRUD_Result{
 interface IManipulateData{
     public function ManipulateData() : CRUD_Result;
 }
-abstract class ManipulateData implements IManipulateData{
+abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
+    protected $dataMode;
+    protected $object;
+    protected CRUD_Result $crudResult;
+    function __construct($dataMode = "", $object = NULL)
+    {
+        $this->dataMode = $dataMode;
+        $this->object =$object;
+    }
     const dataManipOptions = [
         "readOne",
         "readAll",
@@ -33,16 +70,50 @@ abstract class ManipulateData implements IManipulateData{
         "update",
         "delete"
     ];
+    abstract function Write($object):CRUD_Result;
+    abstract function ReadOne($id):CRUD_Result;
+    abstract function ReadAll():CRUD_Result;
+    abstract function Update($object):CRUD_Result;
+    abstract function Delete($id):CRUD_Result;
+
+
+    function ManipulateData(): CRUD_Result{
+        switch($this->dataMode){
+            case self::dataManipOptions[0]:
+                $this->crudResult = $this->ReadOne($this->object->id);
+                break;
+            case self::dataManipOptions[1]:
+                $this->crudResult = $this->ReadAll();
+                break;
+            case self::dataManipOptions[2]: 
+                $this->crudResult = $this->Write($this->object);
+                break;
+            case self::dataManipOptions[3]:
+                $this->crudResult = $this->Update($this->object);
+                break;
+            case self::dataManipOptions[4]:
+                $this->crudResult = $this->Delete($this->object->id);
+                break;
+        }
+        return $this->crudResult;
+    }
 }
 
 
 
-abstract class AccessBudgetDBMySql extends ManipulateData{
-    protected $serverName = "localhost";
-    protected $username = "root";
+abstract class AccessMySqliDB extends ManipulateDataBase{
+    protected $serverName = "";
+    protected $username = "";
     protected $password = "";
-    protected $dbName = "budgetdb";
-
+    protected $dbName = "";
+    function __construct(MySqliServerInfo $sqlInfo,$dataMode = "", $object = NULL)
+    {
+        parent::__construct($dataMode,$object);
+        $this->serverName = $sqlInfo->servername;
+        $this->username = $sqlInfo->username;
+        $this->password = $sqlInfo->password;
+        $this->dbName = $sqlInfo->dbName;
+    }
     protected function Connect(){
         try {
             if($conn = new mysqli($this->serverName,$this->username,$this->password,$this->dbName)){
@@ -55,9 +126,6 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
             throw $th;
         }
     }
-
-
-
 }
 
 
@@ -66,31 +134,15 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
 
 
 
-interface IDb_CRUD{
-    //@param T $object
-    public function Write($object): CRUD_Result;
-
-    public function ReadAll(): CRUD_Result;
-
-    public function ReadOne($id): CRUD_Result;
-
-    public function Update($object): CRUD_Result;
-
-    public function Delete($id): CRUD_Result;
-}
 
 
 
-class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
-    private $dataMode;
-    private $object;
+class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
     const tableName = "users";
-    private CRUD_Result $crudResult;
-    function __construct($dataMode,$object = NULL){
-        $this->dataMode = $dataMode;
-        $this->object = $object;
-        $this->crudResult = new CRUD_Result("UsersDBAccess","",$dataMode,$object);
+    function __construct(MySqliServerInfo $info,$dataMode,$object = NULL){
+        parent::__construct($info, $dataMode, $object);
+        $this->crudResult = new CRUD_Result("UsersDbAccess","",$dataMode,$object);
     }
 
     public function Write($object): CRUD_Result{
@@ -192,22 +244,6 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
             $conn->close();
         }
         return $this->crudResult;
-    }
-
-    public function ManipulateData(): CRUD_Result{
-        // dataManipOptions = readOne,readAll,write,update,delete
-        switch($this->dataMode){
-            case self::dataManipOptions[0]:
-                return $this->ReadOne($this->object->id);
-            case self::dataManipOptions[1]:
-                return $this->ReadAll();
-            case self::dataManipOptions[2]:
-                return $this->Write($this->object);
-            case self::dataManipOptions[3]:
-                return $this->Update($this->object);
-            case self::dataManipOptions[4]:
-                return $this->Delete($this->object->id);
-        }
     }
 }
 

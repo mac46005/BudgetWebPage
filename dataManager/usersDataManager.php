@@ -94,7 +94,8 @@ if(isset($_SESSION['crudResult'])){
                     </thead>
                     <tbody>
                         <?php
-                        $usersDataDBAccess = new UsersDBAccess("readAll");
+                        require_once '../script/BudgetDbInfo.php';
+                        $usersDataDBAccess = new UsersDBAccess($budgetDBInfo,"readAll");
 
                         $tableCrudResult = $usersDataDBAccess->ManipulateData();
                         
