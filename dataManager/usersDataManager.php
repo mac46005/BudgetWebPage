@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <?php
+require '../script/BudgetdbAccess.php';
 session_start();
-if(isset($_SESSION['addedItem'])){
-    echo "New item added";
+$crudResult = NULL;
+if(isset($_SESSION['crudResult'])){
+    $crudResult = $_SESSION['crudResult'];
 }
 ?>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +19,7 @@ if(isset($_SESSION['addedItem'])){
     <link rel="stylesheet" href="../css/components/_dashboard.css">
     <link rel="stylesheet" href="../css/sections/incomeTypeData.css">
 </head>
+
 <body>
     <nav>
         <div class="nav-container">
@@ -34,6 +38,34 @@ if(isset($_SESSION['addedItem'])){
         </div>
     </header>
     <main>
+    <?php
+    if($crudResult != NULL){
+        $crudBackground = "";
+        if($crudResult->isComplete == FALSE){
+            $crudBackground = "failed";
+        }else{
+            $crudBackground = "success";
+        }
+
+        $crudMessage = <<<MESSAGE
+        <section class="crud-result $crudBackground">
+            <h2>$crudResult->title</h2>
+            <p>$crudResult->message</p>
+            <hr/>
+            <h4>Extra Information</h4>
+            <p>
+                $crudResult->item
+            </p>
+            <button id="closeCrudResult">Continue</button>
+        </section>
+        MESSAGE;
+
+        echo $crudMessage;
+    }
+
+    session_destroy();
+    ?>
+    <script src="../script/crudResultMessage.js"></script>
         <div class="main-container dashboard">
             <form action="">
                 <nav>
@@ -61,20 +93,35 @@ if(isset($_SESSION['addedItem'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>mac46005</td>
-                            <td>4600</td>
-                            <td>Marco</td>
-                            <td>Preciado</td>
-                            <td>12-19-1992</td>
-                            <td>111-11-1111</td>
-                            <td>02-23-2022</td>
-                            <td>04-12-2022</td>
-                            <td><a href="#" class="btn btn-edt">Edit</a></td>
-                            <td><a href="#" class="btn btn-dlt">Delete</a></td>
-                        </tr>
-                        
+                        <?php
+                        $usersDataDBAccess = new UsersDBAccess("readAll");
+
+                        $crudResult = $usersDataDBAccess->ManipulateData();
+
+                        if($crudResult->isComplete == TRUE){
+                            for ($i=0; $i < count($crudResult->item); $i++) { 
+                                $tableData = <<<DATA
+                                <tr>
+                                    <td>$crudResult->item[0]</td>
+                                    <td>$crudResult->item[1]</td>
+                                    <td>$crudResult->item[2]</td>
+                                    <td>$crudResult->item[3]</td>
+                                    <td>$crudResult->item[4]</td>
+                                    <td>$crudResult->item[5]</td>
+                                    <td>$crudResult->item[6]</td>
+                                    <td>$crudResult->item[7]</td>
+                                    <td><a href="./addeditUser.php?formTypeName=Update"
+                                </tr>
+
+                                DATA;
+                            }
+                        }else{
+                            $crudMessageBox = <<<MESSAGE
+                            <section>
+                            </section>
+                            MESSAGE;
+                        }
+                        ?>
                     </tbody>
                 </table>
 
@@ -82,4 +129,5 @@ if(isset($_SESSION['addedItem'])){
         </div>
     </main>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php
     $formTypeName = $_GET['formTypeName'];
@@ -14,7 +15,20 @@
     <link rel="stylesheet" href="../css/components/_forms.css">
     <link rel="stylesheet" href="../css/sections/addedituser.css">
 </head>
+
 <body>
+    <?php
+    require '../script/BudgetdbAccess.php';
+
+    session_start();
+    $crudResult = NULL;
+
+    if(isset($_SESSION['crudResult'])){
+        $crudResult = $_SESSION['crudResult'];
+    }else{
+        session_abort();
+    }
+    ?>
     <nav>
         <div class="nav-container">
             <h4><a href="../dashBoard.php">BudgetApp</a></h4>
@@ -35,9 +49,34 @@
         </div>
     </header>
     <main>
+        <?php
+        if($crudResult != NULL){
+            $crudBackground = $crudResult->isComplete;
+            if($isComplete == FALSE){
+                $crudBackground = "failed";
+            }else{
+                $crudBackground = "success";
+            }
+            $crudMessage = <<<MESSAGE
+            <section class="crud-result $crudBackground">
+                <h2>$crudResult->title</h2>
+                <p>$crudResult->message</p>
+                <hr/>
+                <h4>Extra Information</h4>
+                <p>
+                    $crudResult->item
+                </p>
+                <button id="closeCrudResult">Continue</button>
+            </section>
+            MESSAGE;
+
+            echo $crudMessage;
+        }
+        session_abort();
+        ?>
         <div class="main-container">
             <form method="post" action="../script/usersDataDBAccess.php">
-                <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>" >
+                <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
                 <input class="hide" type="text" name="id" id="id">
 
                 <label for="username">Username:</label>
@@ -62,5 +101,7 @@
             </form>
         </div>
     </main>
+    <script src="../script/crudResultMessage.js"></script>
 </body>
+
 </html>

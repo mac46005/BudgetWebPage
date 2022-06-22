@@ -56,3 +56,26 @@ header{
 .hide{
     display: none;
 }
+
+
+
+
+
+main section.crud-result{
+    position: fixed;
+    left: 10%;
+    padding: 1em;
+    border-radius: 1em;
+}
+
+main section.crud-result.success{
+    background: var(--color-success);
+}
+main section.crud-result.failed{
+    background: var(--color-warning);
+}
+
+
+main section.crud-result h2{
+    font-size: 1.3rem;
+}

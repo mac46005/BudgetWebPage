@@ -1,14 +1,27 @@
 <?php
+/**
+ * A CRUD Operations Result object
+ * @version ${1:1.0.0}
+ * @author Marco Preciado
+ */
+class CRUD_Result{
+    public $title;
+    public $message;
+    public $object = NULL;
+    public $isComplete = FALSE;
 
-class HTML_Messages{
-    public function Error($header,$error): string{
-
+    function __construct($title = "",$message = "",$object = NULL,$isComplete = FALSE){
+        $this->title = $title;
+        $this->message = $message;
+        $this->object = $object;
+        $this->isComplete = $isComplete;
     }
+
+
 }
 
-
 interface IManipulateData{
-    public function ManipulateData($dataMode,$item);
+    public function ManipulateData() : CRUD_Result;
 }
 abstract class ManipulateData implements IManipulateData{
     const dataManipOptions = [
@@ -34,7 +47,7 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
                 return $conn;
             }
             else{
-                echo FormatErrors($conn->errors());
+                echo $conn->error;
             }
         } catch (\Exception $th) {
             
@@ -45,33 +58,21 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
 
 }
 
-class CRUD_Result{
-    private $message;
-    private $item = NULL;
-    public $isComplete = FALSE;
 
-    function __construct($message,$item = NULL,$isComplete = FALSE){
-        $this->message = $message;
-        $this->item = $item;
-        $this->isComplete = $isComplete;
-    }
-
-
-}
 
 
 
 
 
 interface IDb_CRUD{
-    //@param T $item
-    public function Write($item): CRUD_Result;
+    //@param T $object
+    public function Write($object): CRUD_Result;
 
     public function ReadAll(): CRUD_Result;
 
     public function ReadOne($id): CRUD_Result;
 
-    public function Update($item): CRUD_Result;
+    public function Update($object): CRUD_Result;
 
     public function Delete($id): CRUD_Result;
 }
@@ -81,48 +82,69 @@ interface IDb_CRUD{
 class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     private $dataMode;
-    private User $item;
+    private $object;
     private CRUD_Result $crudResult;
-    function __construct($dataMode,User $item){
+    function __construct($dataMode,$object = NULL){
         $this->dataMode = $dataMode;
-        $this->item = $item;
+        $this->object = $object;
 
-        $this->crudResult = new CRUD_Result($this->item);
+        $this->crudResult = new CRUD_Result("UsersDBAccess","",$object);
     }
 
-    public function Write($item): CRUD_Result{
-        $conn;
+    public function Write($object): CRUD_Result{
+        $conn = NULL;
         try{
             $conn = $this->Connect();
 
             $today = date("Y-m-d");
-            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$item->username','$item->password','$item->firstName','$item->lastName','$item->dob','$item->ssn','$today','$today')";
+            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$object->username','$object->password','$object->firstName','$object->lastName','$object->dob','$object->ssn','$today','$today')";
 
             if($conn->query($sql)){
-                $crudResult->isComplete = TRUE;
-                $crudResult->message = "UsersDBAccess successfully WRITE to database";
+                $this->crudResult->isComplete = TRUE;
+                $this->crudResult->message = "UsersDBAccess successfully WRITE to database";
             }else{
                 throw new Exception($conn->error);
             }
         }catch(\Exception $e){
-            $crudResult->isComplete = FALSE;
-            $crudResult->message = $conn->error;
+            $this->crudResult->isComplete = FALSE;
+            $this->crudResult->message = $conn->error;
         }finally{
             $conn->close();
         }
 
-        return $crudResult;
+        return $this->crudResult;
 
     }
-    public function ReadAll(): CRUD_Result{
 
+
+
+    
+    public function ReadAll(): CRUD_Result{
+        $conn = NULL;
+        try {
+            $conn = $this->Connect();
+            
+            $sql = "SELECT id,username,password,firstName,lastName,ssn,dateCreate,dateModified FROM users";
+
+            if($result = $conn->query($sql)){
+                $this->crudResult->object = $result;
+                $this->crudResult->isComplete = TRUE;
+            }else{
+                throw new Exception($conn->error);
+            }
+            
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+            $this->isComplete = FALSE;
+        }
+        return $this->crudResult;
     }
 
     public function ReadOne($id): CRUD_Result{
 
     }
 
-    public function Update($item): CRUD_Result{
+    public function Update($object): CRUD_Result{
 
     }
 
@@ -130,31 +152,29 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
 
     }
 
-    public function ManipulateData($dataMode,$item): CRUD_Result{
+    public function ManipulateData(): CRUD_Result{
         // dataManipOptions = readOne,readAll,write,update,delete
-        switch($dataMode){
+        switch($this->dataMode){
             case self::dataManipOptions[0]:
-                echo "readone";
-                $this->ReadOne($this->item->id);
-                break;
+                return $this->ReadOne($this->object->id);
             case self::dataManipOptions[1]:
-                echo "readAll";
-                $this->ReadAll();
-                break;
+                return $this->ReadAll();
             case self::dataManipOptions[2]:
-                echo "write";
-                $this->Write($this->item);
+                return $this->Write($this->object);
             case self::dataManipOptions[3]:
-                echo "update";
-                $this->Update($this->item);
-                break;
+                return $this->Update($this->object);
             case self::dataManipOptions[4]:
-                echo "delete";
-                $this->Delete($this->item->id);
-                break;
+                return $this->Delete($this->object->id);
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -186,14 +206,14 @@ class User{
     function __toString(){
         $brk = "<br/>";
         $toString = "";
-        $toString .= $this->username . $brk;
-        $toString .= $this->password . $brk;
-        $toString .= $this->firstName . $brk;
-        $toString .= $this->lastName . $brk;
-        $toString .= $this->dob . $brk;
-        $toString .= $this->ssn . $brk;
-        $toString .= $this->dateCreated . $brk;
-        $toString .= $this->dateModified . $brk;
+        $toString .= "username: " . $this->username . $brk;
+        $toString .= "password: " . $this->password . $brk;
+        $toString .= "first name: " . $this->firstName . $brk;
+        $toString .= "last name: " . $this->lastName . $brk;
+        $toString .= "dob: " . $this->dob . $brk;
+        $toString .= "ssn: " . $this->ssn . $brk;
+        $toString .= "date created: " . $this->dateCreated . $brk;
+        $toString .= "date modified: " . $this->dateModified . $brk;
 
         return $toString;
     }
