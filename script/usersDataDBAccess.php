@@ -1,16 +1,17 @@
 <?php
 require "../script/BudgetdbAccess.php";
 
-$dataMode = $_REQUEST['dataMode'];
+$dataMode = (isset($_REQUEST['dataMode']) == TRUE)? $_REQUEST['dataMode'] : "";
 echo $dataMode . "<br>";
-$username = $_REQUEST['username'];
-$password = $_REQUEST['password'];
-$firstName = $_REQUEST['firstName'];
-$lastName = $_REQUEST['lastName'];
-$dob = $_REQUEST['dob'];
-$ssn = $_REQUEST['ssn'];
+$id = (isset($_REQUEST['id']))? $_REQUEST['id'] : "";
+$username = (isset($_REQUEST['username']) == TRUE)? $_REQUEST['username'] : "";
+$password = (isset($_REQUEST['password']))? $_REQUEST['password'] : "";
+$firstName = (isset($_REQUEST['firstName']))? $_REQUEST['firstName'] : "";
+$lastName = (isset($_REQUEST['lastName']))? $_REQUEST['lastName'] : "";
+$dob = (isset($_REQUEST['dob']))? $_REQUEST['dob'] : "";
+$ssn = (isset($_REQUEST['ssn']))? $_REQUEST['ssn'] : "";
 
-$user = new User($username, $password, $firstName, $lastName, $dob, $ssn);
+$user = new User($id,$username, $password, $firstName, $lastName, $dob, $ssn);
 
 
 

@@ -112,7 +112,7 @@ if(isset($_SESSION['crudResult'])){
                                     <td>$row[7]</td>
                                     <td>$row[8]</td>
                                     <td><a class="btn btn-edt" href="#">Edit</a></td>
-                                    <td><a class="btn btn-dlt" href="#">Delete</a></td>
+                                    <td><a class="btn btn-dlt" href="../script/deleteusers.php?$row[0]">Delete</a></td>
                                 </tr>
                                 ROW;
                                 echo $rowString;

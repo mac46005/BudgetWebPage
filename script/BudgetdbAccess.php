@@ -47,10 +47,10 @@ abstract class AccessBudgetDBMySql extends ManipulateData{
                 return $conn;
             }
             else{
-                echo $conn->error;
+                throw new Exception($conn->connect_error);
             }
         } catch (\Exception $th) {
-            
+            throw $th;
         }
     }
 
@@ -154,6 +154,24 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
     }
 
     public function Delete($id):CRUD_Result{
+        $conn = NULL;
+        try {
+            $conn = $this->Connect();
+            
+            $sql = "UPDATE users WHERE id = $id";
+            if($conn->query($sql)){
+                $this->crudResult->message = "Successfully DELETE item from database";
+                $this->crudResult->isComplete = TRUE;
+            }else{
+                $this->crudResult->message = "Sql failed to process information.";
+                $this->crudResult->isComplete = FALSE;
+            }
+
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
 
@@ -195,9 +213,9 @@ class User{
     public $dateCreated;
     public $dateModified;
 
-    function __construct($username = 0, $password = "", $firstName = "", $lastName = "", $dob = "", $ssn = "", $dateCreated = "", $dateModified = ""){
+    function __construct($id = "",$username = "", $password = "", $firstName = "", $lastName = "", $dob = "", $ssn = "", $dateCreated = "", $dateModified = ""){
         
-
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->firstName = $firstName;
@@ -211,6 +229,7 @@ class User{
     function __toString(){
         $brk = "<br/>";
         $toString = "";
+        $toString .= "id: " . $this->id . $brk;
         $toString .= "username: " . $this->username . $brk;
         $toString .= "password: " . $this->password . $brk;
         $toString .= "first name: " . $this->firstName . $brk;
