@@ -75,15 +75,24 @@
         session_abort();
         ?>
         <div class="main-container">
+            <?php
+            $UpdateCrud = NULL;
+            if($dataMode == "update"){
+                if(isset($_GET['id'])){
+                    $usersDBAccess = new UsersDBAccess("readOne");
+                    $UpdateCrud = $usersDBAccess->ReadOne($_GET['id'])->object;
+                }
+            }
+            ?>
             <form method="post" action="../script/usersDataDBAccess.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
                 <input class="hide" type="text" name="id" id="id">
 
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username">
+                <input type="text" name="username" id="username" <?php echo "value=\"$crudResult->object->username\"";?>>
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" id="password" <?php echo "value=\"$crudResult->object->password\""; ?>
 
                 <label for="firstName">First Name:</label>
                 <input type="text" name="firstName" id="firstName">

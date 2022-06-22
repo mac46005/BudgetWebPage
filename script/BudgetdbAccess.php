@@ -145,7 +145,23 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
     }
 
     public function ReadOne($id): CRUD_Result{
-
+        $conn = NULL;
+        try {
+            if($conn = $this->Connect()){
+                $sql = "SELECT id, username, password, firstName, lastName, dob, ssn, dateCreated, dateModified WHERE id = $id";
+                if($result = $conn->query($sql)){
+                    $row = $result->fetch_row();
+                    $user = new User($row[0],$row[1],$row[2],$row[3],$row[4],$row[5],$row[6],$row[7],$row[8]);
+                    $this->crudResult->object = $user;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->isComplete = FALSE;
+                    $this->crudResult->message = $conn->error;
+                }
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
         return $this->crudResult;
 
     }
@@ -158,11 +174,13 @@ class UsersDBAccess extends AccessBudgetDBMySql implements IDb_CRUD{
         $conn = NULL;
         try {
             $conn = $this->Connect();
-            
-            $sql = "UPDATE users WHERE id = '$id'";
+            $readOneResult = $this->ReadOne($id);
+
+            $sql = "DELETE FROM users WHERE id = '$id'";
             if($conn->query($sql)){
                 $this->crudResult->message = "Successfully DELETE item from database";
                 $this->crudResult->isComplete = TRUE;
+                $this->crudResult->object = $readOneResult->object;
             }else{
                 $this->crudResult->message = $conn->error;
                 $this->crudResult->isComplete = FALSE;

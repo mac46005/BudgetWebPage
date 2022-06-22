@@ -111,7 +111,7 @@ if(isset($_SESSION['crudResult'])){
                                     <td>$row[6]</td>
                                     <td>$row[7]</td>
                                     <td>$row[8]</td>
-                                    <td><a class="btn btn-edt" href="#">Edit</a></td>
+                                    <td><a class="btn btn-edt" href="../datamanager/addedituser.php?formTypeName=Edit&id=$row[0]">Edit</a></td>
                                     <td><a class="btn btn-dlt" href="../script/usersDataDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
                                 </tr>
                                 ROW;
