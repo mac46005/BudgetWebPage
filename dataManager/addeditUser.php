@@ -5,6 +5,18 @@
     <?php
     $formTypeName = $_GET['formTypeName'];
     $dataMode = ($formTypeName == "Add")? "write" : "update";
+
+
+    require '../script/BudgetdbAccess.php';
+
+    session_start();
+    $crudResult = NULL;
+
+    if(isset($_SESSION['crudResult'])){
+        $crudResult = $_SESSION['crudResult'];
+    }else{
+        session_abort();
+    }
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,18 +29,6 @@
 </head>
 
 <body>
-    <?php
-    require '../script/BudgetdbAccess.php';
-
-    session_start();
-    $crudResult = NULL;
-
-    if(isset($_SESSION['crudResult'])){
-        $crudResult = $_SESSION['crudResult'];
-    }else{
-        session_abort();
-    }
-    ?>
     <nav>
         <div class="nav-container">
             <h4><a href="../dashBoard.php">BudgetApp</a></h4>
@@ -76,6 +76,7 @@
         ?>
         <div class="main-container">
             <?php
+            require_once '../script/BudgetDbInfo.php';
             $updateCrud = NULL;
             if($dataMode == "update"){
                 if(isset($_GET['id'])){
@@ -86,25 +87,25 @@
             ?>
             <form method="post" action="../script/usersDataDBAccess.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
-                <input class="hide" type="text" name="id" id="id" value="<?php echo $updateCrud->object->id?>">
+                <input class="hide" type="text" name="id" id="id" value="<?php echo (isset($updateCrud))? $updateCrud->id : "";?>">
 
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username" <?php echo "value=\"$\"";?>>
+                <input type="text" name="username" id="username" value="<?php echo (isset($updateCrud))? $updateCrud->username : "" ?>">
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" <?php echo "value=\"$crudResult->object->password\""; ?>
+                <input type="password" name="password" id="password" value="<?php echo (isset($updateCrud))? $updateCrud->password : ""; ?>" >
 
                 <label for="firstName">First Name:</label>
-                <input type="text" name="firstName" id="firstName">
+                <input type="text" name="firstName" id="firstName" value="<?php echo (isset($updateCrud))? $updateCrud->firstName : ""?>">
 
                 <label for="lastName">Last Name:</label>
-                <input type="text" name="lastName" id="lastName">
+                <input type="text" name="lastName" id="lastName" value="<?php echo (isset($updateCrud))? $updateCrud->lastName : ""; ?>">
 
                 <label for="dob">DOB:</label>
-                <input type="date" name="dob" id="dob">
+                <input type="date" name="dob" id="dob" value="<?php echo (isset($updateCrud))? $updateCrud->dob : ""?>">
 
                 <label for="ssn">SSN:</label>
-                <input type="text" name="ssn" id="ssn">
+                <input type="text" name="ssn" id="ssn" value="<?php echo (isset($updateCrud))? $updateCrud->ssn : ""?>">
 
                 <input type="submit" value="<?php echo $formTypeName?> User" class="btn submit">
             </form>

@@ -13,9 +13,9 @@ $ssn = (isset($_REQUEST['ssn']))? $_REQUEST['ssn'] : "";
 
 $user = new User($id,$username, $password, $firstName, $lastName, $dob, $ssn);
 
+require_once '../script/BudgetDbInfo.php';
 
-
-$usersDBAccess = new UsersDBAccess($dataMode,$user);
+$usersDBAccess = new UsersDBAccess($budgetDBInfo,$dataMode,$user);
 
 
 
