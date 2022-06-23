@@ -64,32 +64,33 @@
         if($dataMode == "update"){
             $incomeTypesUPDATECRUD_Result = $incomeTypesDBAccess->ReadOne($_GET['id']);
         }
-        if($incomeTypesUPDATECRUD != NULL){
+        if($incomeTypesUPDATECRUD_Result != NULL){
             $crudBackground = "";
-            if($incomeTypesUPDATECRUD->isComplete == TRUE){
+            if($incomeTypesUPDATECRUD_Result->isComplete == TRUE){
             }else{
                 $crudBackground = "failed";
-                $updateFaileMessage = <<<MESSAGE
+                $updateFailedMessage = <<<MESSAGE
                 <section class="crud-message">
-                    <h2>$incomeTypesUPDATECRUD->title</h2>
-                    <p>$incomeTypesUPDATECRUD->message</p>
+                    <h2>$incomeTypesUPDATECRUD_Result->title</h2>
+                    <p>$incomeTypesUPDATECRUD_Result->message</p>
                     <hr/>
                     <h2>Extra information:</h2>
-                    <p>$incomeTypesUPDATECRUD->object</p>
+                    <p>$incomeTypesUPDATECRUD_Result->object</p>
+                    <button id="closeCrudResult">Continue</button>
                 </section>
                 MESSAGE;
+                echo $updateFailedMessage;
             }
         }
         ?>
         <div class="main-container">
             <form action="../script/incomeTypeDBAccess.php">
-                <input type="text" name="dbManipulationType" id="" value="<?php echo $formTypeName; ?>" hidden>
+                <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 
-                <label for="id">ID:</label>
-                <input type="text" name="id" id="id" placeholder="0" disabled>
+                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($incomeTypesUPDATECRUD))? $incomeTypesUPDATECRUD_Result->object->id : ""; ?>" disabled>
 
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" value="<?php echo (isset($incomeTypesUPDATECRUD))? $incomeTypesUPDATECRUD_Result->object->name : ""; ?>">
 
                 <input type="submit" value="Add/Edit Item">
             </form>
