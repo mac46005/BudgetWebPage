@@ -4,9 +4,9 @@
     <?php
     $formTypeName = (isset($_GET['formTypeName']))? $_GET['formTypeName'] : "";
     $dataMode = ($formTypeName == "Add")? "write" : "update";
-
-    
+    $crudResult = (isset($_GET['crudResult']))? $_GET['crudResult'] : NULL;
     ?>
+    <script src="../script/crudResultMessage.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,6 +34,45 @@
         </div>
     </header>
     <main>
+        <?php
+        if($crudResult != NULL){
+            if($crudResult->isComplete == TRUE){
+                $crudBackground = "success";
+            }else{
+                $crudBackground = "failed";
+            }
+            $crudMessageBox = <<<MESSAGE
+            <section>
+                <h2>$crudResult->title</h2>
+                <p>$crudResult->message</p>
+                <hr/>
+                <p>$crudResult->object</p>
+                <button id="closeCrudResult">Continue</button>
+            </section>
+            MESSAGE;
+    
+            echo $crudMessageBox;
+            session_destroy();
+        }
+
+
+
+
+        require_once '../script/BudgetDbInfo.php';
+        $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readOne");
+        $incomeTypesUPDATECRUD_Result = NULL;
+        if($dataMode == "update"){
+            $incomeTypesUPDATECRUD_Result = $incomeTypesDBAccess->ReadOne($_GET['id']);
+        }
+        if($incomeTypesUPDATECRUD != NULL){
+            $crudBackground = "";
+            if($incomeTypesUPDATECRUD->isComplete == TRUE){
+                $crudBackground = "success";
+            }else{
+                $crudBackground = "failed";
+            }
+        }
+        ?>
         <div class="main-container">
             <form action="../script/incomeTypeDBAccess.php">
                 <input type="text" name="dbManipulationType" id="" value="<?php echo $formTypeName; ?>" hidden>
