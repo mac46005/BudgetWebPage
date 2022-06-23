@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <?php
-    $formTypeName = $_GET['formTypeName'];
+    $formTypeName = (isset($_GET['formTypeName']))? $_GET['formTypeName'] : "";
+    $dataMode = ($formTypeName == "Add")? "write" : "update";
+
+    
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

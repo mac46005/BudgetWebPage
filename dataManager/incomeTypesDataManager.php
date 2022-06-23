@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-if(isset($_SESSION['addedItem'])){
-    echo "New item added";
-}
+require '../script/BudgetdbAccess.php';
 ?>
 <html lang="en">
 <head>
@@ -34,6 +32,10 @@ if(isset($_SESSION['addedItem'])){
         </div>
     </header>
     <main>
+        <?php
+
+
+        ?>
         <div class="main-container dashboard">
             <form action="">
                 <nav>
@@ -57,15 +59,22 @@ if(isset($_SESSION['addedItem'])){
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Self-Employed</td>
-                            <td>12-23-22</td>
-                            <td>11-33-23</td>
-                            <td><a class="btn btn-edt" href="#">Edit</a></td>
-                            <td><a class="btn btn-dlt" href="#">Delete</a></td>
-                        </tr>
-                        
+                        <?php
+                        require_once '../script/BudgetDbInfo.php';
+                        $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readAll");
+                        $crudTableResult = $incomeTypesDBAccess->ReadAll();
+                        if($crudTableResult->isComplete == TRUE){
+                            while($row = $crudTableResult->object->fetch_row()){
+
+                            }
+                        }else{
+                            $crudTableMessage = <<<MESSAGE
+                            <section class="crud-table-message">
+                                
+                            </section>
+                            MESSAGE;
+                        }
+                        ?>
                     </tbody>
                 </table>
 

@@ -136,6 +136,60 @@ abstract class AccessMySqliDB extends ManipulateDataBase{
 
 
 
+class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
+    function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$object = "")
+    {
+        parent::__construct($sqlInfo,$dataMode,$object);
+        $this->crudResult = new CRUD_Result("IncomeTypesDBAccess","",$dataMode,$object);
+    }
+
+    public function ReadOne($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+
+    public function ReadAll(): CRUD_Result
+    {
+        $conn = NULL;
+        try {
+            if($conn = $this->Connect()){
+                $sql = "SELECT id, name FROM users";
+                if($result = $conn->query($sql)){
+                    $this->crudResult->object = $result;
+                    $this->crudResult->isComplete = TRUE;
+                }
+            }else{
+                $this->crudResult->message = $conn->error;
+                $this->crudResult->isComplete = FALSE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+            $this->crudResult->isComplete = FALSE;
+        } finally{
+            $conn->close();
+        }
+        
+        return $this->crudResult;
+    }
+
+    public function Write($object): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Delete($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+
+    public function Update($object): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+}
+
+
+
+
 
 
 class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
@@ -318,6 +372,16 @@ class User{
     }
 }
 
+
+class IncomeType{
+    public $id = 0;
+    public $name = "";
+    function __construct($id = 0,$name = "")
+    {
+        $this->id = $id;
+        $this->name = $name;
+    }
+}
 
 
 
