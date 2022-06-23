@@ -67,9 +67,17 @@
         if($incomeTypesUPDATECRUD != NULL){
             $crudBackground = "";
             if($incomeTypesUPDATECRUD->isComplete == TRUE){
-                $crudBackground = "success";
             }else{
                 $crudBackground = "failed";
+                $updateFaileMessage = <<<MESSAGE
+                <section class="crud-message">
+                    <h2>$incomeTypesUPDATECRUD->title</h2>
+                    <p>$incomeTypesUPDATECRUD->message</p>
+                    <hr/>
+                    <h2>Extra information:</h2>
+                    <p>$incomeTypesUPDATECRUD->object</p>
+                </section>
+                MESSAGE;
             }
         }
         ?>
