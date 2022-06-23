@@ -4,7 +4,15 @@
     <?php
     $formTypeName = (isset($_GET['formTypeName']))? $_GET['formTypeName'] : "";
     $dataMode = ($formTypeName == "Add")? "write" : "update";
-    $crudResult = (isset($_GET['crudResult']))? $_GET['crudResult'] : NULL;
+    $crudResult = NULL;
+
+    session_start();
+    if(isset($_GET['crudResult'])){
+        $crudResult = $_GET['crudResult'];
+    }
+    else{
+        session_destroy();
+    }
     ?>
     <script src="../script/crudResultMessage.js"></script>
     <meta charset="UTF-8">
@@ -59,11 +67,13 @@
 
 
         require_once '../script/BudgetDbInfo.php';
-        $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readOne");
+       
         $incomeTypesUPDATECRUD_Result = NULL;
         if($dataMode == "update"){
+            $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readOne");
             $incomeTypesUPDATECRUD_Result = $incomeTypesDBAccess->ReadOne($_GET['id']);
         }
+        
         if($incomeTypesUPDATECRUD_Result != NULL){
             $crudBackground = "";
             if($incomeTypesUPDATECRUD_Result->isComplete == TRUE){

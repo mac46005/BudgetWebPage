@@ -65,7 +65,14 @@ require '../script/BudgetdbAccess.php';
                         $crudTableResult = $incomeTypesDBAccess->ReadAll();
                         if($crudTableResult->isComplete == TRUE){
                             while($row = $crudTableResult->object->fetch_row()){
-
+                                $rowString = <<<ROW
+                                <tr>
+                                    <td>$row[0]</td>
+                                    <td>$row[1]</td>
+                                    <td><a class="btn btn-edt" href="../datamanager/addeditIncomeType.php?formTypeName=Edit&id=$row[0]">Edit</a></td>
+                                    <td><a class="btn btn-dlt" href="../datamanager/incomeTypeDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
+                                </tr>
+                                ROW;
                             }
                         }else{
                             $crudTableMessage = <<<MESSAGE
