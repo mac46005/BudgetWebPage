@@ -200,7 +200,7 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
         $conn = NULL;
         try {
             if($conn = $this->Connect()){
-                $sql = "SELECT id, username, password, firstName, lastName, dob, ssn, dateCreated, dateModified WHERE id = $id";
+                $sql = "SELECT id, username, password, firstName, lastName, dob, ssn, dateCreated, dateModified FROM users WHERE id = $id";
                 if($result = $conn->query($sql)){
                     $row = $result->fetch_row();
                     $user = new User($row[0],$row[1],$row[2],$row[3],$row[4],$row[5],$row[6],$row[7],$row[8]);
@@ -212,13 +212,33 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 }
             }
         } catch (\Throwable $th) {
-            throw $th;
+            $this->crudResult->message = $th;
         }
         return $this->crudResult;
 
     }
 
     public function Update($object): CRUD_Result{
+        $conn = NULL;
+        try {
+            if($conn = $this->Connect()){
+                $today = date("Y-m-d");
+                $sql = "UPDATE users SET username = '$object->username', password = '$object->password',firstName = '$object->firstName', lastName = '$object->lastName', dob = '$object->dob', ssn = '$object->ssn',dateModified = '$today' WHERE id = '$object->id'";
+                if($conn->query($sql)){
+                    $this->crudResult->message = "Successfully UPDATE item in database";
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = $conn->error;
+                    $this->crudResult->isComplete = FALSE;
+                }
+            }else{
+                $this->crudResult->message = $conn->error;
+                $this->crudResult->isComplete = FALSE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+            $this->crudResult->isComplete = FALSE;
+        }
         return $this->crudResult;
     }
 

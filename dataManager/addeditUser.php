@@ -34,7 +34,7 @@
             <h4><a href="../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./manageTypeIndex.html">Manage Types</a></li>
+                <li><a href="../dataManager/DataManagerHome.html">Manage Types</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
@@ -51,8 +51,8 @@
     <main>
         <?php
         if($crudResult != NULL){
-            $crudBackground = $crudResult->isComplete;
-            if($isComplete == FALSE){
+            $crudBackground = "";
+            if($crudResult->isComplete == FALSE){
                 $crudBackground = "failed";
             }else{
                 $crudBackground = "success";
@@ -64,7 +64,7 @@
                 <hr/>
                 <h4>Extra Information</h4>
                 <p>
-                    $crudResult->item
+                    $crudResult->object
                 </p>
                 <button id="closeCrudResult">Continue</button>
             </section>

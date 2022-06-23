@@ -37,7 +37,7 @@ if($crudResult != NULL){
             break;
         case "update":
             if($crudResult->isComplete == FALSE){
-                header("location:../dataManager/addEditUser.php");
+                header("location:../dataManager/addEditUser.php?formTypeName=Edit&id=$crudResult->object->id");
             }else{
                 header("location:../dataManager/usersDataManager.php");
             }
