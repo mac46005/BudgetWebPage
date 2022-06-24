@@ -3,10 +3,10 @@ require "../script/BudgetdbAccess.php";
 $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "";
 $id = (isset($_GET['id']))? $_GET['id'] : 0;
 $name = (isset($_GET['name']))? $_GET['name'] : "";
-require_once '../script/BudgetDbInfo.php';
+
 $incomeType = new IncomeType($id, $name);
 
-
+require_once '../script/BudgetDbInfo.php';
 $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,$dataMode,$incomeType);
 
 
@@ -23,9 +23,9 @@ if($crudResult != NULL){
             session_start();
             $_SESSION['crudResult'] = $crudResult;
             if($crudResult->isComplete == FALSE){
-                header("location:../datamanager/incomeTypesDataManager.php");
+                header("location:../datamanager/addeditIncomeType.php?formTypeName=Add");
             }else{
-                header("location:../datamanager/addeditIncomeType.php?formTypeName=Edit&id=$crudRow->id");
+                header("location:../datamanager/incomeTypesDataManager.php");
             }
             break;
         case "update":

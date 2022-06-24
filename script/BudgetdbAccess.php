@@ -183,7 +183,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         $conn = NULL;
         try {
             if($conn = $this->Connect()){
-                $sql = "SELECT id, name FROM users";
+                $sql = "SELECT id, name FROM incomeTypes";
                 if($result = $conn->query($sql)){
                     $this->crudResult->object = $result;
                     $this->crudResult->isComplete = TRUE;
@@ -193,7 +193,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 $this->crudResult->isComplete = FALSE;
             }
         } catch (\Throwable $th) {
-            $this->crudResult->message = $th;
+            $this->crudResult->message = $conn->error;
             $this->crudResult->isComplete = FALSE;
         } finally{
             $conn->close();
@@ -207,10 +207,18 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         $conn = NULL;
         try {
             if($conn = $this->Connect()){
-                $sql = "INSERT INTO users (name) VALUES ($object->id)";
+                $sql = "INSERT INTO incomeTypes (name) VALUES ($object->name)";
+                if($conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->message = "Successfully WRITE into database.";
+                }else{
+                    $this->crudResult->isComplete = FALSE;
+                    $this->crudResult->message = $conn->error;
+                }
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            $this->crudResult->isComplete = FALSE;
+            $this->crudResult->message = $th;
         }
         return $this->crudResult;
     }
@@ -418,6 +426,17 @@ class IncomeType{
     {
         $this->id = $id;
         $this->name = $name;
+    }
+
+    function __toString()
+    {
+        $toString = <<<STRING
+        IncomeType
+        id: $this->id<br/>
+        name: $this->name<br/>
+        STRING;
+        
+        return $toString;
     }
 }
 

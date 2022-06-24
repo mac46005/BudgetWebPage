@@ -29,14 +29,14 @@
     </header>
     <main>
         <?php
-        session_start();
         require '../script/BudgetdbAccess.php';
         $crudResult = NULL;
         if(isset($_SESSION['crudResult'])){
-            $crudResult = $_SESSION['crudResult'];
-            
+            $crudResult = $_SESSION['crudResult'];   
         }
-
+        else{
+            session_abort();
+        }
         if($crudResult != NULL){
             $crudBackground = ($crudResult->isComplete == FALSE)? "failed" : "success";
             $messageBox = <<<MESSAGE
@@ -48,6 +48,7 @@
                 <p>$crudResult->object</p>
             </section>
             MESSAGE;
+            echo $messageBox;
         }
         ?>
         <div class="main-container dashboard">
@@ -87,6 +88,7 @@
                                     <td><a class="btn btn-dlt" href="../datamanager/incomeTypeDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
                                 </tr>
                                 ROW;
+                                echo $rowString;
                             }
                         }else{
                             $crudTableMessage = <<<MESSAGE
@@ -99,6 +101,7 @@
                                 <button class="closeCrudResult">Continue</button>
                             </section>
                             MESSAGE;
+                            echo $crudTableMessage;
                         }
                         ?>
                     </tbody>
