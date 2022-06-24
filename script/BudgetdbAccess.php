@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * 
+ * @author Marco Preciado
+ */
 class MySqliServerInfo{
     public $servername = "";
     public $username = "";
@@ -14,6 +17,11 @@ class MySqliServerInfo{
     }
 }
 
+
+/**
+ * @author Marco Preciado
+ * @version 1.1.1
+ */
 interface IDb_CRUD{
     //@param T $object
     public function Write($object): CRUD_Result;
@@ -54,6 +62,13 @@ class CRUD_Result{
 interface IManipulateData{
     public function ManipulateData() : CRUD_Result;
 }
+
+/**
+ * Manipulates CRUD operations. Mainly fires CRUD operations according to the dataMode given
+ * 
+ * 
+ * @author Marco Preciado
+ */
 abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     protected $dataMode;
     protected $object;
@@ -77,6 +92,9 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     abstract function Delete($id):CRUD_Result;
 
 
+    /**
+     * Executes the chosen CRUD operations given by the dataMode value
+     */
     function ManipulateData(): CRUD_Result{
         switch($this->dataMode){
             case self::dataManipOptions[0]:
@@ -100,12 +118,19 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
 }
 
 
-
+/**
+ * Access MySqli Database given a MySqliServerInfo object
+ * in order to access the database.
+ * 
+ * @author Marco Preciado
+ */
 abstract class AccessMySqliDB extends ManipulateDataBase{
     protected $serverName = "";
     protected $username = "";
     protected $password = "";
     protected $dbName = "";
+
+    
     function __construct(MySqliServerInfo $sqlInfo,$dataMode = "", $object = NULL)
     {
         parent::__construct($dataMode,$object);
@@ -114,6 +139,11 @@ abstract class AccessMySqliDB extends ManipulateDataBase{
         $this->password = $sqlInfo->password;
         $this->dbName = $sqlInfo->dbName;
     }
+
+    /**
+     * Connects to the database given the correct MySqliServerInfo object.
+     * Will throw en exception if the connection fails.
+     */
     protected function Connect(){
         try {
             if($conn = new mysqli($this->serverName,$this->username,$this->password,$this->dbName)){
@@ -174,6 +204,14 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
     public function Write($object): CRUD_Result
     {
+        $conn = NULL;
+        try {
+            if($conn = $this->Connect()){
+                $sql = "INSERT INTO users (name) VALUES ($object->id)";
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return $this->crudResult;
     }
     public function Delete($id): CRUD_Result

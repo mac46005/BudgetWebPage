@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<?php
-session_start();
-require '../script/BudgetdbAccess.php';
-?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,8 +29,26 @@ require '../script/BudgetdbAccess.php';
     </header>
     <main>
         <?php
+        session_start();
+        require '../script/BudgetdbAccess.php';
+        $crudResult = NULL;
+        if(isset($_SESSION['crudResult'])){
+            $crudResult = $_SESSION['crudResult'];
+            
+        }
 
-
+        if($crudResult != NULL){
+            $crudBackground = ($crudResult->isComplete == FALSE)? "failed" : "success";
+            $messageBox = <<<MESSAGE
+            <section>
+                <h2>$crudResult->title</h2>
+                <p>$crudResult->message</p>
+                <hr/>
+                <h2>Extra Information</h2>
+                <p>$crudResult->object</p>
+            </section>
+            MESSAGE;
+        }
         ?>
         <div class="main-container dashboard">
             <form action="">
@@ -77,7 +91,12 @@ require '../script/BudgetdbAccess.php';
                         }else{
                             $crudTableMessage = <<<MESSAGE
                             <section class="crud-table-message">
-                                
+                                <h2>$crudTableResult->title</h2>
+                                <p>$crudTableResult->message</p>
+                                <hr/>
+                                <h2>Extra Information</h2>
+                                <p>$crudTableResult->object</p>
+                                <button class="closeCrudResult">Continue</button>
                             </section>
                             MESSAGE;
                         }
