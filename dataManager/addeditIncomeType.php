@@ -67,7 +67,7 @@
             MESSAGE;
     
             echo $crudMessageBox;
-            session_destroy();
+            session_abort();
         }
 
 
