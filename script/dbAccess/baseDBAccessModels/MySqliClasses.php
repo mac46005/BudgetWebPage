@@ -63,6 +63,10 @@ interface IManipulateData{
 }
 
 
+/**
+ * Base class resposible for Manipulating data depending on the dataMode
+ * @author Marco Preciado
+ */
 abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     protected CRUD_Result $crudResult;
     const dataManipOptions = [
@@ -84,6 +88,11 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     abstract function Update($object) : CRUD_Result;
     abstract function Delete($id) : CRUD_Result;
 
+
+    /**
+     * Fires the CRUD operation needed depending on the dataMode given.
+     * @return CRUD_Result
+     */
     function ManipulateData(): CRUD_Result
     {
         switch($this->crudResult->dataMode){
@@ -107,6 +116,11 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     }
 }
 
+/**
+ * The main base abstract class to access and manipulate data from using mysqli.
+ * CRUD operations can be overwritten depending on your use.
+ * Every CRUD operation results an CRUD_Result object.
+ */
 abstract class AccessMySqliDB extends ManipulateDataBase{
     private MySqliServerInfo $sqlInfo;
     function __construct(MySqliServerInfo $sqlInfo, $dataMode, $object = NULL)
@@ -115,6 +129,9 @@ abstract class AccessMySqliDB extends ManipulateDataBase{
         $this->sqlInfo = $sqlInfo;
     }
 
+    /**
+     * Returns a mysqli object
+     */
     protected function Connect() : mysqli{
         try{
             if($conn = new mysqli($this->sqlInfo->servername,$this->sqlInfo->username,$this->sqlInfo->password,$this->sqlInfo->dbName)){

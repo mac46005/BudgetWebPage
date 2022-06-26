@@ -1,5 +1,5 @@
 <?php
-require_once '../script/BudgetdbAccess.php';
+require_once './baseDBAccessModels/MySqliClasses.php';
 
 $budgetDBInfo = new MySqliServerInfo("localhost","root","","budgetdb");
 ?>

@@ -1,7 +1,9 @@
 <?php
-require "../script/BudgetdbAccess.php";
+require "../dbAccess/BudgetdbAccess.php";
+
+
 $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "";
-$id = (isset($_GET['id']))? $_GET['id'] : 0;
+$id = (isset($_GET['id']))? $_GET['id'] : "";
 $name = (isset($_GET['name']))? $_GET['name'] : "";
 
 $incomeType = new IncomeType($id, $name);
