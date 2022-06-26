@@ -40,7 +40,7 @@
         if($crudResult != NULL){
             $crudBackground = ($crudResult->isComplete == FALSE)? "failed" : "success";
             $messageBox = <<<MESSAGE
-            <section>
+            <section class="crud-result">
                 <h2>$crudResult->title</h2>
                 <p>$crudResult->message</p>
                 <hr/>
@@ -84,6 +84,8 @@
                                 <tr>
                                     <td>$row[0]</td>
                                     <td>$row[1]</td>
+                                    <td>$row[2]</td>
+                                    <td>$row[3]</td>
                                     <td><a class="btn btn-edt" href="../datamanager/addeditIncomeType.php?formTypeName=Edit&id=$row[0]">Edit</a></td>
                                     <td><a class="btn btn-dlt" href="../datamanager/incomeTypeDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
                                 </tr>

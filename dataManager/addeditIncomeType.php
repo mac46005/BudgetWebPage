@@ -7,8 +7,11 @@
     You are doing the same code in different pages
      -->
     <?php
+    
     $formTypeName = (isset($_GET['formTypeName']))? $_GET['formTypeName'] : "";
     $dataMode = ($formTypeName == "Add")? "write" : "update";
+
+    
     ?>
     <script src="../script/crudResultMessage.js"></script>
     <meta charset="UTF-8">
@@ -39,14 +42,21 @@
     </header>
     <main>
         <?php
+
+        session_start();
         include '../script/BudgetdbAccess.php';
         $crudResult = NULL;
+
+        
         if(isset($_GET['crudResult'])){
             $crudResult = $_GET['crudResult'];
+            echo "<script>console.log('$crudResult->object');</script>";
         }
         else{
             session_abort();
         }
+
+
 
 
         $crudBackground = "";
@@ -65,7 +75,9 @@
                 <button id="closeCrudResult">Continue</button>
             </section>
             MESSAGE;
-    
+
+
+
             echo $crudMessageBox;
             session_abort();
         }
@@ -100,6 +112,9 @@
             }
         }
         ?>
+
+
+
         <div class="main-container">
             <form action="../script/incomeTypeDBAccess.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
