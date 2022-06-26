@@ -6,6 +6,7 @@ $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "";
 $id = (isset($_GET['id']))? $_GET['id'] : "";
 $name = (isset($_GET['name']))? $_GET['name'] : "";
 
+require '../dbAccess/models/incomeType.php';
 $incomeType = new IncomeType($id, $name);
 
 require_once '../script/BudgetDbInfo.php';
