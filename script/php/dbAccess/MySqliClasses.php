@@ -1,5 +1,7 @@
 <?php
 
+use CRUD_Result as GlobalCRUD_Result;
+
 /**
  * Carries properties needed to access MySqli
  */
@@ -44,19 +46,50 @@ class CRUD_Result{
     }
 }
 
+interface IWrite{
+    /**
+     * Writes an object to the database
+     */
+    function Write($object) : CRUD_Result;
+}
+interface IReadOne{
+    /**
+     * Reads one data from database
+     */
+    function ReadOne($id) : CRUD_Result;
+}
+interface IReadAll{
+    /**
+     * Reads all data from database
+     */
+    function ReadAll() : CRUD_Result;
+}
+interface IUpdate{
+    /**
+     * Updates a single object in database
+     */
+    function Update($object) : CRUD_Result;
+}
+/**
+ * Deletes a single object from the database
+ */
+interface IDelete{
+    function Delete($id) : CRUD_Result;
+}
 
 /**
  * Basic database operations. ReadOne, ReadAll, Write, Update, Delete
  * 
  * @author Marco Preciado
  */
-interface IDb_CRUD{
+interface IDb_CRUD extends IWrite, IReadOne, IReadAll, IUpdate, IDelete{
     public function Write($object) : CRUD_Result;
     public function ReadOne($id) : CRUD_Result;
     public function ReadAll() : CRUD_Result;
     public function Update($object) : CRUD_Result;
     public function Delete($id) : CRUD_Result;
 }
+
 
 interface IManipulateData{
     public function ManipulateData() : CRUD_Result;

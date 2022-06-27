@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php
+    require '../script/php/htmlProcessing/crudMessageBox.php';
+    require '../script/php/dbAccess/MySqliClasses.php';
+    require_once '../script/php/dbAccess/BudgetDbInfo.php';
+    require_once '../script/php/dbAccess/models/incomeType.php';
+    require_once '../script/php/dbAccess/BudgetdbAccess.php';
+
+
+    $crud_ResultContentPopulator = new CRUD_ResultContentPopulator();
+    ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,36 +39,14 @@
     </header>
     <main>
         <?php
-        require '../script/BudgetdbAccess.php';
-        $crudResult = NULL;
-        if(isset($_SESSION['crudResult'])){
-            $crudResult = $_SESSION['crudResult'];   
-        }
-        else{
-            session_abort();
-        }
-        if($crudResult != NULL){
-            $crudBackground = ($crudResult->isComplete == FALSE)? "failed" : "success";
-            $messageBox = <<<MESSAGE
-            <section class="crud-result">
-                <h2>$crudResult->title</h2>
-                <p>$crudResult->message</p>
-                <hr/>
-                <h2>Extra Information</h2>
-                <p>$crudResult->object</p>
-            </section>
-            MESSAGE;
-            echo $messageBox;
-        }
+        $crud_ResultContentPopulator->DisplaySessionMessage();
         ?>
         <div class="main-container dashboard">
             <form action="">
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="./addEditIncomeType.php?formTypeName=Add">Add Item</a></li>
-                        <li><a href="#">Income Sub Types</a></li>
-                        <li><a href="#"></a></li>
+                        <li><a href="./addEditIncomeType.php?dataMode=write">Add Item</a></li>
                     </ul>
                 </nav>
 
@@ -75,36 +63,11 @@
                     </thead>
                     <tbody>
                         <?php
-                        require_once '../script/BudgetDbInfo.php';
+                        
                         $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readAll");
                         $crudTableResult = $incomeTypesDBAccess->ReadAll();
-                        if($crudTableResult->isComplete == TRUE){
-                            while($row = $crudTableResult->object->fetch_row()){
-                                $rowString = <<<ROW
-                                <tr>
-                                    <td>$row[0]</td>
-                                    <td>$row[1]</td>
-                                    <td>$row[2]</td>
-                                    <td>$row[3]</td>
-                                    <td><a class="btn btn-edt" href="../datamanager/addeditIncomeType.php?formTypeName=Edit&id=$row[0]">Edit</a></td>
-                                    <td><a class="btn btn-dlt" href="../datamanager/incomeTypeDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
-                                </tr>
-                                ROW;
-                                echo $rowString;
-                            }
-                        }else{
-                            $crudTableMessage = <<<MESSAGE
-                            <section class="crud-table-message">
-                                <h2>$crudTableResult->title</h2>
-                                <p>$crudTableResult->message</p>
-                                <hr/>
-                                <h2>Extra Information</h2>
-                                <p>$crudTableResult->object</p>
-                                <button class="closeCrudResult">Continue</button>
-                            </section>
-                            MESSAGE;
-                            echo $crudTableMessage;
-                        }
+                        
+                        $crud_ResultContentPopulator->DisplayCRUDDataRow($crudTableResult,"./addeditIncomeType.php","../script/php/dbAccess/incomeTypeDBAccessController.php");
                         ?>
                     </tbody>
                 </table>

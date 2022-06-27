@@ -1,5 +1,4 @@
 <?php
-require './baseDBAccessModels/MySqliClasses.php';
 
 class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$object = "")
