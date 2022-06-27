@@ -44,10 +44,10 @@
 
         $crudMessageBox->DisplaySessionMessage();
 
-        $object = NULL;
+        $dataObject = NULL;
         if($dataMode == "update"){
             require_once '../script/php/dbAccess/BudgetDbInfo.php';
-            $object = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,$dataMode),$id);
+            $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,$dataMode),$id);
         }
         ?>
         <script src="../script/js/crudResultMessage.js"></script>
@@ -57,11 +57,13 @@
             <form action="../script/php/dbAccess/incomeTypeDBAccessController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 
-                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($object))? $object->id : ""; ?>" disabled>
+                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($dataObject))? $dataObject->id : ""; ?>" disabled>
 
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name" value="<?php echo (isset($object))? $object->name : ""; ?>">
+                <input type="text" name="name" id="name" value="<?php echo (isset($dataObject))? $dataObject->name : ""; ?>">
 
+                <input class="hide" type="date" name="dateCreated" id="dateCreated" value="<?php echo $dataObject->dateCreated; ?>">
+                <input class="hide type="date" name="" id="dateModified">
                 <input type="submit" value="Add/Edit Item">
             </form>
         </div>

@@ -22,8 +22,8 @@ class MySqliServerInfo{
 
 
 /**
- * An object with after results of a CRUD operation
- * Includes flags that details the type of CRUD operation performed. It also includes the object that was used for the attempted operation. Main purpose is to carry the result of the crud operation.
+ * An dataObject with after results of a CRUD operation
+ * Includes flags that details the type of CRUD operation performed. It also includes the dataObject that was used for the attempted operation. Main purpose is to carry the result of the crud operation.
  * @author Marco Preciado
  */
 class CRUD_Result{
@@ -32,25 +32,25 @@ class CRUD_Result{
 
     public $title = "";
 
-    public $object = NULL;
+    public $dataObject = NULL;
 
     public $isComplete = FALSE;
 
-    function __construct($title = "", $message = "", $dataMode = "", $object = NULL, $isComplete = FALSE)
+    function __construct($title = "", $message = "", $dataMode = "", $dataObject = NULL, $isComplete = FALSE)
     {
         $this->dataMode = $dataMode;
         $this->title = $title;
         $this->message = $message;
-        $this->object = $object;
+        $this->dataObject = $dataObject;
         $this->isComplete = $isComplete;
     }
 }
 
 interface IWrite{
     /**
-     * Writes an object to the database
+     * Writes an dataObject to the database
      */
-    function Write($object) : CRUD_Result;
+    function Write($dataObject) : CRUD_Result;
 }
 interface IReadOne{
     /**
@@ -66,12 +66,12 @@ interface IReadAll{
 }
 interface IUpdate{
     /**
-     * Updates a single object in database
+     * Updates a single dataObject in database
      */
-    function Update($object) : CRUD_Result;
+    function Update($dataObject) : CRUD_Result;
 }
 /**
- * Deletes a single object from the database
+ * Deletes a single dataObject from the database
  */
 interface IDelete{
     function Delete($id) : CRUD_Result;
@@ -83,10 +83,10 @@ interface IDelete{
  * @author Marco Preciado
  */
 interface IDb_CRUD extends IWrite, IReadOne, IReadAll, IUpdate, IDelete{
-    public function Write($object) : CRUD_Result;
+    public function Write($dataObject) : CRUD_Result;
     public function ReadOne($id) : CRUD_Result;
     public function ReadAll() : CRUD_Result;
-    public function Update($object) : CRUD_Result;
+    public function Update($dataObject) : CRUD_Result;
     public function Delete($id) : CRUD_Result;
 }
 
@@ -110,15 +110,15 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
         "delete"
     ];
 
-    function __construct($dataMode = "", $object = NULL)
+    function __construct($dataMode = "", $dataObject = NULL)
     {
-        $this->crudResult = new CRUD_Result("","",$dataMode,$object);
+        $this->crudResult = new CRUD_Result("","",$dataMode,$dataObject);
     }
 
-    abstract function Write($object) : CRUD_Result;
+    abstract function Write($dataObject) : CRUD_Result;
     abstract function ReadOne($id) : CRUD_Result;
     abstract function ReadAll() : CRUD_Result;
-    abstract function Update($object) : CRUD_Result;
+    abstract function Update($dataObject) : CRUD_Result;
     abstract function Delete($id) : CRUD_Result;
 
 
@@ -130,19 +130,19 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     {
         switch($this->crudResult->dataMode){
             case self::dataManipOptions[0]:
-                $this->crudResult = $this->ReadOne($this->crudResult->object->id);
+                $this->crudResult = $this->ReadOne($this->crudResult->dataObject->id);
                 break;
             case self::dataManipOptions[1]:
                 $this->crudResult = $this->ReadAll();
                 break;
             case self::dataManipOptions[2]:
-                $this->crudResult = $this->Write($this->crudResult->object);
+                $this->crudResult = $this->Write($this->crudResult->dataObject);
                 break;
             case self::dataManipOptions[3]:
-                $this->crudResult = $this->Update($this->crudResult->object);
+                $this->crudResult = $this->Update($this->crudResult->dataObject);
                 break;
             case self::dataManipOptions[4]:
-                $this->crudResult = $this->Delete($this->crudResult->object->id);
+                $this->crudResult = $this->Delete($this->crudResult->dataObject->id);
                 break;
         }
         return $this->crudResult;
@@ -152,18 +152,18 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
 /**
  * The main base abstract class to access and manipulate data from using mysqli.
  * CRUD operations can be overwritten depending on your use.
- * Every CRUD operation results an CRUD_Result object.
+ * Every CRUD operation results an CRUD_Result dataObject.
  */
 abstract class AccessMySqliDB extends ManipulateDataBase{
     private MySqliServerInfo $sqlInfo;
-    function __construct(MySqliServerInfo $sqlInfo, $dataMode, $object = NULL)
+    function __construct(MySqliServerInfo $sqlInfo, $dataMode, $dataObject = NULL)
     {
-        parent::__construct($dataMode, $object);
+        parent::__construct($dataMode, $dataObject);
         $this->sqlInfo = $sqlInfo;
     }
 
     /**
-     * Returns a mysqli object
+     * Returns a mysqli dataObject
      */
     protected function Connect() : mysqli{
         try{

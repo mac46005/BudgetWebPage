@@ -1,12 +1,12 @@
 <?php
 
 class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
-    function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$object = "")
+    function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$dataObject = "")
     {
 
 
 
-        parent::__construct($sqlInfo,$dataMode,$object);
+        parent::__construct($sqlInfo,$dataMode,$dataObject);
 
         $this->crudResult->title = "IncomeTypesDBAccess";
         
@@ -21,7 +21,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 if($result = $conn->query($sql)){
                     if($row = $result->fetch_row()){
                         $incomeType = new IncomeType($row[0],$row[1],$row[2],$row[3]);
-                        $this->crudResult->object = $incomeType;
+                        $this->crudResult->dataObject = $incomeType;
                         $this->crudResult->isComplete = TRUE;
                     }else{
                         $errorMessage = <<<ERROR
@@ -55,7 +55,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
             if($conn = $this->Connect()){
                 $sql = "SELECT id, name,dateCreated, dateModified FROM incomeTypes";
                 if($result = $conn->query($sql)){
-                    $this->crudResult->object = $result;
+                    $this->crudResult->dataObject = $result;
                     $this->crudResult->isComplete = TRUE;
                 }else{
                     $this->crudResult->isComplete = FALSE;
@@ -75,13 +75,13 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         return $this->crudResult;
     }
 
-    public function Write($object): CRUD_Result
+    public function Write($dataObject): CRUD_Result
     {
         $conn = NULL;
         try {
             if($conn = $this->Connect()){
                 $today = date("Y-m-d");
-                $sql = "INSERT INTO incomeTypes (name,dateCreated,dateModified) VALUES ('$object->name','$today','$today')";
+                $sql = "INSERT INTO incomeTypes (name,dateCreated,dateModified) VALUES ('$dataObject->name','$today','$today')";
                 if($conn->query($sql)){
                     $this->crudResult->isComplete = TRUE;
                     $this->crudResult->message = "Successfully WRITE into database.";
@@ -100,12 +100,28 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         return $this->crudResult;
     }
 
-    public function Update($object): CRUD_Result
+    public function Update($dataObject): CRUD_Result
     {
         $conn = new mysqli();
+        $today = date("Y-m-d");
         try{
             if($conn = $this->Connect()){
-                $crudResult = $this->ReadOne($object->id);
+                $sql = <<<SQL
+                UPDATE incomeTypes
+                SET name = $dataObject->name, dateModified = $today
+                WHERE id = $dataObject->id
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->message = "Successfully UPDATE item in database";
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to read sql<br/>
+                    $conn->error;
+                    MESSAGE;
+                }
+            
             }else{
                 $this->crudResult->message = <<<MESSAGE
                 Failes to connect to database<br/>
@@ -113,7 +129,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 MESSAGE;
             }
         }catch(\Exception $ex){
-            $this->crudResult->message = $ex->getMessage();
+            $this->crudResult->message .= $ex->getMessage();
         }
         return $this->crudResult;
     }
@@ -140,18 +156,18 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
 class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
     const tableName = "users";
-    function __construct(MySqliServerInfo $info,$dataMode,$object = NULL){
-        parent::__construct($info, $dataMode, $object);
-        $this->crudResult = new CRUD_Result("UsersDbAccess","",$dataMode,$object);
+    function __construct(MySqliServerInfo $info,$dataMode,$dataObject = NULL){
+        parent::__construct($info, $dataMode, $dataObject);
+        $this->crudResult = new CRUD_Result("UsersDbAccess","",$dataMode,$dataObject);
     }
 
-    public function Write($object): CRUD_Result{
+    public function Write($dataObject): CRUD_Result{
         $conn = NULL;
         try{
             $conn = $this->Connect();
 
             $today = date("Y-m-d");
-            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$object->username','$object->password','$object->firstName','$object->lastName','$object->dob','$object->ssn','$today','$today')";
+            $sql = "INSERT INTO users (username,password,firstName,lastName,dob,ssn,dateCreated,dateModified) VALUES('$dataObject->username','$dataObject->password','$dataObject->firstName','$dataObject->lastName','$dataObject->dob','$dataObject->ssn','$today','$today')";
 
             if($conn->query($sql)){
                 $this->crudResult->isComplete = TRUE;
@@ -181,7 +197,7 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
             $sql = "SELECT id,username,password,firstName,lastName, dob,ssn,dateCreated,dateModified FROM users";
 
             if($result = $conn->query($sql)){
-                $this->crudResult->object = $result;
+                $this->crudResult->dataObject = $result;
                 $this->crudResult->isComplete = TRUE;
             }else{
                 throw new Exception($conn->error);
@@ -204,7 +220,7 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 if($result = $conn->query($sql)){
                     $row = $result->fetch_row();
                     $user = new User($row[0],$row[1],$row[2],$row[3],$row[4],$row[5],$row[6],$row[7],$row[8]);
-                    $this->crudResult->object = $user;
+                    $this->crudResult->dataObject = $user;
                     $this->crudResult->isComplete = TRUE;
                 }else{
                     $this->crudResult->isComplete = FALSE;
@@ -218,12 +234,12 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
     }
 
-    public function Update($object): CRUD_Result{
+    public function Update($dataObject): CRUD_Result{
         $conn = NULL;
         try {
             if($conn = $this->Connect()){
                 $today = date("Y-m-d");
-                $sql = "UPDATE users SET username = '$object->username', password = '$object->password',firstName = '$object->firstName', lastName = '$object->lastName', dob = '$object->dob', ssn = '$object->ssn',dateModified = '$today' WHERE id = '$object->id'";
+                $sql = "UPDATE users SET username = '$dataObject->username', password = '$dataObject->password',firstName = '$dataObject->firstName', lastName = '$dataObject->lastName', dob = '$dataObject->dob', ssn = '$dataObject->ssn',dateModified = '$today' WHERE id = '$dataObject->id'";
                 if($conn->query($sql)){
                     $this->crudResult->message = "Successfully UPDATE item in database";
                     $this->crudResult->isComplete = TRUE;
@@ -252,7 +268,7 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
             if($conn->query($sql)){
                 $this->crudResult->message = "Successfully DELETE item from database";
                 $this->crudResult->isComplete = TRUE;
-                $this->crudResult->object = $readOneResult->object;
+                $this->crudResult->dataObject = $readOneResult->dataObject;
             }else{
                 $this->crudResult->message = $conn->error;
                 $this->crudResult->isComplete = FALSE;

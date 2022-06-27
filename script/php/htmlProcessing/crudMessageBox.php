@@ -18,7 +18,7 @@ class CRUD_ResultContentPopulator {
     }
     function DisplayCRUDDataRow(CRUD_Result $crudResult,$editLinkName,$deleteLinkName){
         if($crudResult->isComplete == TRUE){
-            while($row = $crudResult->object->fetch_row()){
+            while($row = $crudResult->dataObject->fetch_row()){
                 $rowString = "<tr>";
 
                 for ($i=0; $i < count($row); $i++) { 
@@ -37,17 +37,17 @@ class CRUD_ResultContentPopulator {
     }
 
     public function DisplayUpdateErrorMessage(IReadOne $dbCrud,$id){
-        $object = NULL;
+        $dataObject = NULL;
         $crudResult = NULL;
         if($crudResult = $dbCrud->ReadOne($id)){
             if($crudResult->isComplete == FALSE){
                 $crudBackground = "failed";
                 echo self::CRUDMessageBox($crudResult,$crudBackground);
             }else{
-                $object = $crudResult::$object;
+                $dataObject = $crudResult->dataObject;
             }
         }
-        return $object;
+        return $dataObject;
     }
     private function CRUDMessageBox(CRUD_Result $crudResult = NULL,$classItem = "") : string{
         $messageBox = "";
@@ -59,7 +59,7 @@ class CRUD_ResultContentPopulator {
                 <p>$crudResult->message</p>
                 <hr/>
                 <h2>Object Info</h2>
-                <p>$crudResult->object</p>
+                <p>$crudResult->dataObject</p>
                 <button id="closeCrudResult">Continue</button>
             </section>
             MESSAGE;
