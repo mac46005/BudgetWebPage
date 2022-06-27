@@ -55,6 +55,7 @@ class CRUD_ResultContentPopulator {
             $messageBox = <<<MESSAGE
             <section class="crud-result $classItem">
                 <h2>$crudResult->title</h2>
+                <h3>Function: $crudResult->dataMode</h3>
                 <p>$crudResult->message</p>
                 <hr/>
                 <h2>Object Info</h2>

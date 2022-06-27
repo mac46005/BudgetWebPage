@@ -3,6 +3,9 @@
 class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$object = "")
     {
+
+
+
         parent::__construct($sqlInfo,$dataMode,$object);
 
         $this->crudResult->title = "IncomeTypesDBAccess";
@@ -11,6 +14,37 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
     public function ReadOne($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try{
+            if($conn = $this->Connect()){
+                $sql = "SELECT id,name,dateCreated,dateModified FROM incomeTypes WHERE id = '$id'";
+                if($result = $conn->query($sql)){
+                    if($row = $result->fetch_row()){
+                        $incomeType = new IncomeType($row[0],$row[1],$row[2],$row[3]);
+                        $this->crudResult->object = $incomeType;
+                        $this->crudResult->isComplete = TRUE;
+                    }else{
+                        $errorMessage = <<<ERROR
+                        Failed load row data from ReadOne.<br/>
+                        $conn->error;
+                        ERROR;
+                        $this->crudResult->message = $errorMessage;
+                    }
+                }
+            }else{
+                $errorMessage = <<<ERROR
+                $this->crudResult->title failed to process<br/>
+                $conn->error;
+                ERROR;
+
+                $this->crudResult->message = $errorMessage;
+            }
+        }catch(\Exception $ex){
+            $this->crudResult->message .= "$ex->getMeesage(0";
+        }
+        finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
 
@@ -68,6 +102,19 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
     public function Update($object): CRUD_Result
     {
+        $conn = new mysqli();
+        try{
+            if($conn = $this->Connect()){
+                $crudResult = $this->ReadOne($object->id);
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failes to connect to database<br/>
+                $conn->connect_error;
+                MESSAGE;
+            }
+        }catch(\Exception $ex){
+            $this->crudResult->message = $ex->getMessage();
+        }
         return $this->crudResult;
     }
 }

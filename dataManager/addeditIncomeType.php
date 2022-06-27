@@ -4,8 +4,9 @@
     <?php
     require '../script/php/htmlProcessing/crudMessageBox.php';
     require '../script/php/dbAccess/models/incomeType.php';
-
-    $dataMode = (isset($_GET['id']))? $_GET['id'] : NULL;
+    require '../script/php/dbAccess/MySqliClasses.php';
+    require '../script/php/dbAccess/BudgetdbAccess.php';
+    $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "write";
     $id = (isset($_GET['id']))? $_GET['id'] : 0;
     $formTitle = ($dataMode == "write" || $dataMode == NULL)? "Add" : "Update";
 
@@ -45,7 +46,7 @@
 
         $object = NULL;
         if($dataMode == "update"){
-            require_once '../script/dbAccess/BudgetDbInfo.php';
+            require_once '../script/php/dbAccess/BudgetDbInfo.php';
             $object = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,$dataMode),$id);
         }
         ?>
@@ -53,7 +54,7 @@
 
 
         <div class="main-container">
-            <form action="../script/incomeTypeDBAccess.php">
+            <form action="../script/php/dbAccess/incomeTypeDBAccessController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 
                 <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($object))? $object->id : ""; ?>" disabled>
