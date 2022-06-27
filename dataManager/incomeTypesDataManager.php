@@ -57,8 +57,8 @@
                             <th>name</th>
                             <th>Date Created</th>
                             <th>Date Modified</th>
-                            <th>edit</th>
-                            <th>delete</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>

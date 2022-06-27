@@ -24,7 +24,7 @@ class CRUD_ResultContentPopulator {
                 for ($i=0; $i < count($row); $i++) { 
                     $rowString .= "<td>$row[$i]</td>";
                 }
-                $rowString .= "<td><a class='btn btn-edt' href='$editLinkName?dataMode=update&id=$row[0]'>Edit</a></td>";
+                $rowString .= "<td><a class='btn btn-edt' href='$editLinkName?dataMode=update&id=$row[0]'>Update</a></td>";
                 $rowString .= "<td><a class='btn btn-dlt' href='$deleteLinkName?dataMode=delete&id=$row[0]'>Delete</a></td>";
 
                 echo $rowString;
@@ -36,6 +36,19 @@ class CRUD_ResultContentPopulator {
         
     }
 
+    public function DisplayUpdateErrorMessage(IReadOne $dbCrud,$id){
+        $object = NULL;
+        $crudResult = NULL;
+        if($crudResult = $dbCrud->ReadOne($id)){
+            if($crudResult->isComplete == FALSE){
+                $crudBackground = "failed";
+                echo self::CRUDMessageBox($crudResult,$crudBackground);
+            }else{
+                $object = $crudResult::$object;
+            }
+        }
+        return $object;
+    }
     private function CRUDMessageBox(CRUD_Result $crudResult = NULL,$classItem = "") : string{
         $messageBox = "";
         if($crudResult != NULL){

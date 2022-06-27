@@ -3,11 +3,11 @@
 <head>
     <?php
     require '../script/php/htmlProcessing/crudMessageBox.php';
-    require '../script/dbAccess/models/incomeType.php';
+    require '../script/php/dbAccess/models/incomeType.php';
 
-    $dataMode = $_GET['dataMode'];
+    $dataMode = (isset($_GET['id']))? $_GET['id'] : NULL;
     $id = (isset($_GET['id']))? $_GET['id'] : 0;
-    $formTitle = ($dataMode == "update")? "Edit" : "Add";
+    $formTitle = ($dataMode == "write" || $dataMode == NULL)? "Add" : "Update";
 
     ?>
     <script src="../script/crudResultMessage.js"></script>
@@ -42,23 +42,24 @@
         $crudMessageBox = new CRUD_ResultContentPopulator();
 
         $crudMessageBox->DisplaySessionMessage();
+
+        $object = NULL;
+        if($dataMode == "update"){
+            require_once '../script/dbAccess/BudgetDbInfo.php';
+            $object = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,$dataMode),$id);
+        }
         ?>
         <script src="../script/js/crudResultMessage.js"></script>
 
 
         <div class="main-container">
-            <?php
-            if($dataMode == "update"){
-                
-            }
-            ?>
             <form action="../script/incomeTypeDBAccess.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 
-                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($incomeTypesUPDATECRUD))? $incomeTypesUPDATECRUD_Result->object->id : ""; ?>" disabled>
+                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($object))? $object->id : ""; ?>" disabled>
 
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name" value="<?php echo (isset($incomeTypesUPDATECRUD))? $incomeTypesUPDATECRUD_Result->object->name : ""; ?>">
+                <input type="text" name="name" id="name" value="<?php echo (isset($object))? $object->name : ""; ?>">
 
                 <input type="submit" value="Add/Edit Item">
             </form>
