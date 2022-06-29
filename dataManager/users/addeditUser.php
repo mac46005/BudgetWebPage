@@ -32,7 +32,7 @@
             <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="../dataManager/DataManagerHome.html">Manage Types</a></li>
+                <li><a href="../DataManagerHome.html">Manage Types</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
