@@ -1,6 +1,34 @@
 <?php
 
 
+
+class ExpenseTypesDBAccess extends AccessMySqliDB{
+    function __construct(MySqliServerInfo $sqlInfo, $dataMode = "", $dataObject = "")
+    {
+        parent::__construct($sqlInfo,$dataMode,$dataObject);
+        $this->crudResult->title = "ExpenseTypesDBAccess";
+    }
+    public function ReadOne($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function ReadAll(): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Write($object): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Update($dataObject): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Delete($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+}
 /**
  * An income type can represent a whole class type of income.
  * e.g. self-employed, wages, ssn, etc.
@@ -8,9 +36,6 @@
 class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$dataObject = "")
     {
-
-
-
         parent::__construct($sqlInfo,$dataMode,$dataObject);
 
         $this->crudResult->title = "IncomeTypesDBAccess";
