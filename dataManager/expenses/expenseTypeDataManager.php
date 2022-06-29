@@ -52,7 +52,7 @@
             <nav>
                 <input type="text" name="search-box" id="" placeholder="search...">
                 <ul>
-                    <li><a href="./addEditIncomeType.php?dataMode=write">Add Item</a></li>
+                    <li><a href="./addeditExpenseType.php?dataMode=write">Add Item</a></li>
                 </ul>
             </nav>
             <table>
@@ -66,7 +66,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    $usersDbAccess = new UsersDBAccess($budgetDBInfo,"readAll");
+                    $usersDbAccess = new ExpenseTypesDBAccess($budgetDBInfo,"readAll");
                     $crudMessageBox->DisplayCRUDDataRow($usersDbAccess->ReadAll(),"","");
                     ?>
                 </tbody>
