@@ -1,14 +1,21 @@
 <?php
+
+
+
 class CRUD_ResultContentPopulator {
     private ?CRUD_Result $crudResult = NULL;
 
-
+    /**
+     * Displays the current session CRUD_Result object given by the controller.
+     */
     function DisplaySessionMessage() : void{
-        if(isset($_SESSION['crudResult'])){
-            $crudResult = $_SESSION['crudResult'];
+        $sessionId = 'crudResult';
+        if(isset($_SESSION[$sessionId])){
+            $crudResult = $_SESSION[$sessionId];
             $crudBackground = ($crudResult->isComplete == TRUE)? "success" : "failed";
             
-            echo self::CRUDMessageBox($crudResult,$crudBackground);
+            echo $this->CRUDMessageBox($crudResult,$crudBackground);
+            session_destroy();
 
         }else{
             session_abort();
@@ -31,7 +38,7 @@ class CRUD_ResultContentPopulator {
 
             }
         }else{
-            echo self::CRUDMessageBox($crudResult,"failed");
+            echo $this->CRUDMessageBox($crudResult,"failed");
         }
         
     }
@@ -42,7 +49,7 @@ class CRUD_ResultContentPopulator {
         if($crudResult = $dbCrud->ReadOne($id)){
             if($crudResult->isComplete == FALSE){
                 $crudBackground = "failed";
-                echo self::CRUDMessageBox($crudResult,$crudBackground);
+                echo $this->CRUDMessageBox($crudResult,$crudBackground);
             }else{
                 $dataObject = $crudResult->dataObject;
             }

@@ -15,7 +15,7 @@ class IncomeType{
     function __toString()
     {
         $toString = <<<STRING
-        IncomeType
+        IncomeType<br/>
         id: $this->id<br/>
         name: $this->name<br/>
         STRING;

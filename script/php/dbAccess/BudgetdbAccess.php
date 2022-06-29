@@ -1,5 +1,10 @@
 <?php
 
+
+/**
+ * An income type can represent a whole class type of income.
+ * e.g. self-employed, wages, ssn, etc.
+ */
 class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo,$dataMode = "",$dataObject = "")
     {
@@ -30,6 +35,8 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                         ERROR;
                         $this->crudResult->message = $errorMessage;
                     }
+                }else{
+                    $this->crudResult->message = $conn->error;
                 }
             }else{
                 $errorMessage = <<<ERROR
@@ -40,7 +47,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 $this->crudResult->message = $errorMessage;
             }
         }catch(\Exception $ex){
-            $this->crudResult->message .= "$ex->getMeesage(0";
+            $this->crudResult->message .= "$ex->getMeesage()";
         }
         finally{
             $conn->close();
@@ -97,6 +104,28 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     }
     public function Delete($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                DELETE FROM incomeTypes WHERE id = '$id'
+                SQL;
+                if($conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->message = "Successfully DELETE item from database.";
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failes to UPDATE<br/>
+                    May need to check SQL syntax error<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = $conn->connect_error;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }
         return $this->crudResult;
     }
 
@@ -108,8 +137,8 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
             if($conn = $this->Connect()){
                 $sql = <<<SQL
                 UPDATE incomeTypes
-                SET name = $dataObject->name, dateModified = $today
-                WHERE id = $dataObject->id
+                SET name = '$dataObject->name', dateModified = '$today'
+                WHERE id = '$dataObject->id'
                 SQL;
 
                 if($conn->query($sql)){
@@ -117,8 +146,8 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                     $this->crudResult->isComplete = TRUE;
                 }else{
                     $this->crudResult->message = <<<MESSAGE
-                    Failed to read sql<br/>
-                    $conn->error;
+                    Failed to update sql<br/>
+                    $conn->errors;
                     MESSAGE;
                 }
             

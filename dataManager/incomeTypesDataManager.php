@@ -39,6 +39,7 @@
     </header>
     <main>
         <?php
+        session_start();
         $crud_ResultContentPopulator->DisplaySessionMessage();
         ?>
         <div class="main-container dashboard">
@@ -49,6 +50,7 @@
                         <li><a href="./addEditIncomeType.php?dataMode=write">Add Item</a></li>
                     </ul>
                 </nav>
+
 
                 <table>
                     <thead>
@@ -75,5 +77,6 @@
             </form>
         </div>
     </main>
+    <script src="../script/js/crudResultMessage.js"></script>
 </body>
 </html>
