@@ -73,19 +73,131 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
         }
         return $this->crudResult;
     }
-    public function Write($object): CRUD_Result
+    public function Write($dataObject): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $today = date("Y-m-d");
+                $sql = <<<SQL
+                INSERT INTO expenseTypes (name,dateCreated,dateModified)
+                VALUES ($dataObject)
+                SQL;
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully WRITE in database<br/>
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to run query on sql<br/>
+                    $conn->error<br/>
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->error<br/>
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
+
         return $this->crudResult;
     }
     public function Update($dataObject): CRUD_Result
     {
+        $today = date("Y-m-d");
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                UPDATE expenseTypes
+                SET 
+                name = '$dataObject->name',
+                dateModified = '$today'
+                WHERE id = '$dataObject->id'
+                SQL;
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to sql database<br/>
+                $conn->error<br/>
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
     public function Delete($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                DELETE expenseTypes
+                WHERE id = '$id'
+                SQL;
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully DELETE item from database
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to DELETE item<br/>
+                    $conn->error<br/>
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database.<br/>
+                $conn->error<br/>
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
+        
         return $this->crudResult;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * An income type can represent a whole class type of income.
  * e.g. self-employed, wages, ssn, etc.
