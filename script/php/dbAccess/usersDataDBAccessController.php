@@ -1,8 +1,8 @@
 <?php
-require "../script/BudgetdbAccess.php";
+require './MySqliClasses.php';
+require './BudgetdbAccess.php';
 
 $dataMode = (isset($_REQUEST['dataMode']) == TRUE)? $_REQUEST['dataMode'] : "";
-echo $dataMode . "<br>";
 $id = (isset($_REQUEST['id']))? $_REQUEST['id'] : "";
 $username = (isset($_REQUEST['username']) == TRUE)? $_REQUEST['username'] : "";
 $password = (isset($_REQUEST['password']))? $_REQUEST['password'] : "";
@@ -11,9 +11,9 @@ $lastName = (isset($_REQUEST['lastName']))? $_REQUEST['lastName'] : "";
 $dob = (isset($_REQUEST['dob']))? $_REQUEST['dob'] : "";
 $ssn = (isset($_REQUEST['ssn']))? $_REQUEST['ssn'] : "";
 
+
 $user = new User($id,$username, $password, $firstName, $lastName, $dob, $ssn);
 
-require_once '../script/BudgetDbInfo.php';
 
 $usersDBAccess = new UsersDBAccess($budgetDBInfo,$dataMode,$user);
 
@@ -37,7 +37,7 @@ if($crudResult != NULL){
             break;
         case "update":
             if($crudResult->isComplete == FALSE){
-                header("location:../dataManager/addEditUser.php?formTypeName=Edit&id=$crudResult->object->id");
+                header("location:../dataManager/addEditUser.php?dataMode=update&id=$crudResult->dataObject->id");
             }else{
                 header("location:../dataManager/usersDataManager.php");
             }

@@ -3,20 +3,18 @@
 
 <head>
     <?php
-    $formTypeName = $_GET['formTypeName'];
-    $dataMode = ($formTypeName == "Add")? "write" : "update";
+    require_once '../script/php/dbAccess/BudgetDbInfo.php';
+    require '../script/php/dbAccess/models/users.php';
+    require '../script/php/dbAccess/MySqliClasses.php';
+    require '../script/php/dbAccess/BudgetdbAccess.php';
+    require '../script/php/htmlProcessing/crudMessageBox.php';
 
 
-    require '../script/BudgetdbAccess.php';
+    $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "write";
+    $formTypeName = ($dataMode == "update")? "Update" : "Add";
+    $id = (isset($_GET['id']))? $_GET['id'] : 0;
 
-    session_start();
-    $crudResult = NULL;
-
-    if(isset($_SESSION['crudResult'])){
-        $crudResult = $_SESSION['crudResult'];
-    }else{
-        session_abort();
-    }
+    $crudMessageBox = new CRUD_ResultContentPopulator();
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,62 +48,35 @@
     </header>
     <main>
         <?php
-        if($crudResult != NULL){
-            $crudBackground = "";
-            if($crudResult->isComplete == FALSE){
-                $crudBackground = "failed";
-            }else{
-                $crudBackground = "success";
-            }
-            $crudMessage = <<<MESSAGE
-            <section class="crud-result $crudBackground">
-                <h2>$crudResult->title</h2>
-                <p>$crudResult->message</p>
-                <hr/>
-                <h4>Extra Information</h4>
-                <p>
-                    $crudResult->object
-                </p>
-                <button id="closeCrudResult">Continue</button>
-            </section>
-            MESSAGE;
-
-            echo $crudMessage;
-        }
-        session_abort();
+        session_start();
+        $crudMessageBox->DisplaySessionMessage();
         ?>
         <div class="main-container">
             <?php
-            require_once '../script/BudgetDbInfo.php';
-            $updateCrud = NULL;
-            if($dataMode == "update"){
-                if(isset($_GET['id'])){
-                    $usersDBAccess = new UsersDBAccess($budgetDBInfo,"readOne");
-                    $updateCrud = $usersDBAccess->ReadOne($_GET['id'])->object;
-                }
-            }
+            $dataObject = NULL;
+            $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new UsersDBAccess($budgetDBInfo,"readOne"), $id);
             ?>
             <form method="post" action="../script/usersDataDBAccess.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
-                <input class="hide" type="text" name="id" id="id" value="<?php echo (isset($updateCrud))? $updateCrud->id : "";?>">
+                <input class="hide" type="text" name="id" id="id" value="<?php echo (isset($_GET['id']))? $_GET['id'] : 0;?>">
 
                 <label for="username">Username:</label>
-                <input type="text" name="username" id="username" value="<?php echo (isset($updateCrud))? $updateCrud->username : "" ?>">
+                <input type="text" name="username" id="username" value="<?php echo (isset($dataObject))? $dataObject->username : ""; ?>">
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" value="<?php echo (isset($updateCrud))? $updateCrud->password : ""; ?>" >
+                <input type="password" name="password" id="password" value="<?php echo (isset($dataObject))? $dataObject->password : ""; ?>" >
 
                 <label for="firstName">First Name:</label>
-                <input type="text" name="firstName" id="firstName" value="<?php echo (isset($updateCrud))? $updateCrud->firstName : ""?>">
+                <input type="text" name="firstName" id="firstName" value="<?php echo (isset($dataObject))? $dataObject->firstName : ""; ?>">
 
                 <label for="lastName">Last Name:</label>
-                <input type="text" name="lastName" id="lastName" value="<?php echo (isset($updateCrud))? $updateCrud->lastName : ""; ?>">
+                <input type="text" name="lastName" id="lastName" value="<?php echo (isset($dataObject))? $dataObject->lastName : ""; ?>">
 
                 <label for="dob">DOB:</label>
-                <input type="date" name="dob" id="dob" value="<?php echo (isset($updateCrud))? $updateCrud->dob : ""?>">
+                <input type="date" name="dob" id="dob" value="<?php echo (isset($dataObject))? $dataObject->dob : ""; ?>">
 
                 <label for="ssn">SSN:</label>
-                <input type="text" name="ssn" id="ssn" value="<?php echo (isset($updateCrud))? $updateCrud->ssn : ""?>">
+                <input type="text" name="ssn" id="ssn" value="<?php echo (isset($dataObject))? $dataObject->ssn : ""; ?>">
 
                 <input type="submit" value="<?php echo $formTypeName?> User" class="btn submit">
             </form>

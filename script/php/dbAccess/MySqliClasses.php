@@ -156,10 +156,13 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
  */
 abstract class AccessMySqliDB extends ManipulateDataBase{
     private MySqliServerInfo $sqlInfo;
+
     function __construct(MySqliServerInfo $sqlInfo, $dataMode, $dataObject = NULL)
     {
         parent::__construct($dataMode, $dataObject);
         $this->sqlInfo = $sqlInfo;
+
+        
     }
 
     /**

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <?php
-require '../script/BudgetdbAccess.php';
-session_start();
-$crudResult = NULL;
-if(isset($_SESSION['crudResult'])){
-    $crudResult = $_SESSION['crudResult'];
-}
+require_once '../script/php/dbAccess/BudgetDbInfo.php';
+require '../script/dbAccess/baseDBAccessModels/MySqliClasses.php';
+require '../script/php/dbAccess/BudgetdbAccess.php';
+require '../script/php/htmlProcessing/crudMessageBox.php';
+
+$crudMessageBox = new CRUD_ResultContentPopulator();
 ?>
 <html lang="en">
 
@@ -39,31 +39,11 @@ if(isset($_SESSION['crudResult'])){
     </header>
     <main>
     <?php
-    if($crudResult != NULL){
-        $crudBackground = "";
-        if($crudResult->isComplete == FALSE){
-            $crudBackground = "failed";
-        }else{
-            $crudBackground = "success";
-        }
 
-        $crudMessage = <<<MESSAGE
-        <section class="crud-result $crudBackground">
-            <h2>$crudResult->title</h2>
-            <p>$crudResult->message</p>
-            <hr/>
-            <h4>Extra Information</h4>
-            <p>
-                $crudResult->object
-            </p>
-            <button id="closeCrudResult">Continue</button>
-        </section>
-        MESSAGE;
+    //* Display $_SESSION['crudResult'] if exists others nothing is displayed
+    session_start();
+    $crudMessageBox->DisplaySessionMessage();
 
-        echo $crudMessage;
-    }
-
-    session_destroy();
     ?>
     <script src="../script/crudResultMessage.js"></script>
         <div class="main-container dashboard">
@@ -71,7 +51,7 @@ if(isset($_SESSION['crudResult'])){
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="../dataManager/addedituser.php?formTypeName=Add">Add User</a></li>
+                        <li><a href="../dataManager/addedituser.php?dataMode=write">Add User</a></li>
                         <li>
                     </ul>
                 </nav>
@@ -94,47 +74,11 @@ if(isset($_SESSION['crudResult'])){
                     </thead>
                     <tbody>
                         <?php
-                        require_once '../script/BudgetDbInfo.php';
-                        $usersDataDBAccess = new UsersDBAccess($budgetDBInfo,"readAll");
-
-                        $tableCrudResult = $usersDataDBAccess->ManipulateData();
-                        
-                        if($tableCrudResult->isComplete == TRUE){
-                            while($row = $tableCrudResult->object->fetch_row()){
-                                $rowString = <<<ROW
-                                <tr>
-                                    <td>$row[0]</td>
-                                    <td>$row[1]</td>
-                                    <td>$row[2]</td>
-                                    <td>$row[3]</td>
-                                    <td>$row[4]</td>
-                                    <td>$row[5]</td>
-                                    <td>$row[6]</td>
-                                    <td>$row[7]</td>
-                                    <td>$row[8]</td>
-                                    <td><a class="btn btn-edt" href="../datamanager/addedituser.php?formTypeName=Edit&id=$row[0]">Edit</a></td>
-                                    <td><a class="btn btn-dlt" href="../script/usersDataDBAccess.php?dataMode=delete&id=$row[0]">Delete</a></td>
-                                </tr>
-                                ROW;
-                                echo $rowString;
-                            }
-                        }
-                        else{
-                            $crudMessageBox = <<<MESSAGE
-                            <section class="crud-table-message failed">
-                                <h2>$tableCrudResult->title</h2>
-                                <p>$tableCrudResult->message</p>
-                                <hr/>
-                                <h4>Extra Information:</h4>
-                                <p></p>
-                                <button type="button" id="closeCrudTableMessage">Continue</button>
-                            </section>
-                            MESSAGE;
-
-                            echo $crudMessageBox;
-                        }
+                        // * Display table data otherwise display error message
+                        $usersDbAccess = new UsersDBAccess($budgetDBInfo, "readAll");
+                        $crudResult = $usersDbAccess->ReadAll();
+                        $crudMessageBox->DisplayCRUDDataRow($crudResult,"./addeditUser.php","../script/php/dbAccess/usersDataDbAccessController.php")
                         ?>
-                        <script src="../script/crudTableMessage.js"></script>
                     </tbody>
                 </table>
             </form>

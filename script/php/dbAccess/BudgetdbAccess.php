@@ -40,7 +40,7 @@ class IncomeTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 }
             }else{
                 $errorMessage = <<<ERROR
-                $this->crudResult->title failed to process<br/>
+                $this->crudResult->title failed to connect<br/>
                 $conn->error;
                 ERROR;
 
@@ -207,6 +207,7 @@ class UsersDBAccess extends AccessMySqliDB implements IDb_CRUD{
         }catch(\Exception $e){
             $this->crudResult->isComplete = FALSE;
             $this->crudResult->message = $conn->error;
+            $this->crudResult-> message .= "<br/>" . $e->getMessage();
         }finally{
             $conn->close();
         }

@@ -42,9 +42,13 @@
         <?php
         $crudMessageBox = new CRUD_ResultContentPopulator();
 
+        // Finds $_SESSION['crudResult'] and displays if isset
         session_start();
         $crudMessageBox->DisplaySessionMessage();
 
+
+        // If dataMode = update. Will get object needed for updating from db.
+        // If error found it will display error message where needed.
         $dataObject = NULL;
         if($dataMode == "update"){
             require_once '../script/php/dbAccess/BudgetDbInfo.php';
@@ -55,6 +59,7 @@
 
 
         <div class="main-container">
+        // * if dataObject is not NULL it will be used to display update information of current object.
             <form action="../script/php/dbAccess/incomeTypeDBAccessController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 

@@ -39,6 +39,7 @@
     </header>
     <main>
         <?php
+        // * Displays $_SESSION['crudResult'] if found in session.
         session_start();
         $crud_ResultContentPopulator->DisplaySessionMessage();
         ?>
@@ -65,7 +66,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        
+                        // * Poplates table information
                         $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readAll");
                         $crudTableResult = $incomeTypesDBAccess->ReadAll();
                         
