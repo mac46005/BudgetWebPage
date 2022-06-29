@@ -1,6 +1,8 @@
 <?php
-require './MySqliClasses.php';
-require './BudgetdbAccess.php';
+require '../MySqliClasses.php';
+require '../BudgetdbAccess.php';
+require '../models/users.php';
+require_once '../BudgetDbInfo.php';
 
 $dataMode = (isset($_REQUEST['dataMode']) == TRUE)? $_REQUEST['dataMode'] : "";
 $id = (isset($_REQUEST['id']))? $_REQUEST['id'] : "";
@@ -23,27 +25,27 @@ $crudResult = $usersDBAccess->ManipulateData();
 session_start();
 $_SESSION['crudResult'] = $crudResult;
 if($crudResult != NULL){
-    switch($crudResult->crudType){
+    switch($crudResult->dataMode){
         case "readOne":
             break;
         case "readAll":
             break;
         case "write":
             if($crudResult->isComplete == FALSE){
-                header("location:../dataManager/addEditUser.php");
+                header("location:../../../../dataManager/users/addEditUser.php");
             }else{
-                header("location:../dataManager/usersDataManager.php");
+                header("location:../../../../dataManager/users/usersDataManager.php");
             }
             break;
         case "update":
             if($crudResult->isComplete == FALSE){
-                header("location:../dataManager/addEditUser.php?dataMode=update&id=$crudResult->dataObject->id");
+                header("location:../../../../dataManager/users/addEditUser.php?dataMode=update&id=$crudResult->dataObject->id");
             }else{
-                header("location:../dataManager/usersDataManager.php");
+                header("location:../../../../dataManager/users/usersDataManager.php");
             }
             break;
         case "delete":
-            header("location:../datamanager/usersDataManager.php");
+            header("location:../../../../datamanager/users/usersDataManager.php");
     }
     
 }

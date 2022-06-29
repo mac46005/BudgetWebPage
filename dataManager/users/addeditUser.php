@@ -3,12 +3,12 @@
 
 <head>
     <?php
-    require_once '../script/php/dbAccess/BudgetDbInfo.php';
-    require '../script/php/dbAccess/models/users.php';
-    require '../script/php/dbAccess/MySqliClasses.php';
-    require '../script/php/dbAccess/BudgetdbAccess.php';
-    require '../script/php/htmlProcessing/crudMessageBox.php';
-
+    
+    require '../../script/php/dbAccess/models/users.php';
+    require '../../script/php/dbAccess/MySqliClasses.php';
+    require '../../script/php/dbAccess/BudgetdbAccess.php';
+    require '../../script/php/htmlProcessing/crudMessageBox.php';
+    require_once '../../script/php/dbAccess/BudgetDbInfo.php';
 
     $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "write";
     $formTypeName = ($dataMode == "update")? "Update" : "Add";
@@ -20,16 +20,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $formTypeName; ?> User</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components/_nav.css">
-    <link rel="stylesheet" href="../css/components/_forms.css">
-    <link rel="stylesheet" href="../css/sections/addedituser.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/components/_nav.css">
+    <link rel="stylesheet" href="../../css/components/_forms.css">
+    <link rel="stylesheet" href="../../css/sections/addedituser.css">
 </head>
 
 <body>
     <nav>
         <div class="nav-container">
-            <h4><a href="../dashBoard.php">BudgetApp</a></h4>
+            <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
                 <li><a href="../dataManager/DataManagerHome.html">Manage Types</a></li>
@@ -51,12 +51,16 @@
         session_start();
         $crudMessageBox->DisplaySessionMessage();
         ?>
+        <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container">
             <?php
             $dataObject = NULL;
-            $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new UsersDBAccess($budgetDBInfo,"readOne"), $id);
+            if($dataMode == "update"){
+                $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new UsersDBAccess($budgetDBInfo,"readOne"), $id);
+            }
+            
             ?>
-            <form method="post" action="../script/usersDataDBAccess.php">
+            <form method="post" action="../../script/php/dbAccess/controllers/usersDataDBAccessController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
                 <input class="hide" type="text" name="id" id="id" value="<?php echo (isset($_GET['id']))? $_GET['id'] : 0;?>">
 

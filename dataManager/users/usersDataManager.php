@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <?php
-require_once '../script/php/dbAccess/BudgetDbInfo.php';
-require '../script/dbAccess/baseDBAccessModels/MySqliClasses.php';
-require '../script/php/dbAccess/BudgetdbAccess.php';
-require '../script/php/htmlProcessing/crudMessageBox.php';
+
+require '../../script/php/dbAccess/MySqliClasses.php';
+require '../../script/php/dbAccess/BudgetdbAccess.php';
+require '../../script/php/dbAccess/models/users.php';
+require '../../script/php/htmlProcessing/crudMessageBox.php';
+require_once '../../script/php/dbAccess/BudgetDbInfo.php';
+
 
 $crudMessageBox = new CRUD_ResultContentPopulator();
 ?>
@@ -14,16 +17,16 @@ $crudMessageBox = new CRUD_ResultContentPopulator();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income Type Data Manager</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components/_nav.css">
-    <link rel="stylesheet" href="../css/components/_dashboard.css">
-    <link rel="stylesheet" href="../css/sections/incomeTypeData.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/components/_nav.css">
+    <link rel="stylesheet" href="../../css/components/_dashboard.css">
+    <link rel="stylesheet" href="../../css/sections/incomeTypeData.css">
 </head>
 
 <body>
     <nav>
         <div class="nav-container">
-            <h4><a href="../dashBoard.php">BudgetApp</a></h4>
+            <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
                 <li><a href="./DataManagerHome.html">Data Manager</a></li>
@@ -46,13 +49,14 @@ $crudMessageBox = new CRUD_ResultContentPopulator();
     $crudMessageBox->DisplaySessionMessage();
 
     ?>
-    <script src="../script/crudResultMessage.js"></script>
+
+    <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container dashboard">
             <form action="">
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="../dataManager/addedituser.php?dataMode=write">Add User</a></li>
+                        <li><a href="./addedituser.php?dataMode=write">Add User</a></li>
                         <li>
                     </ul>
                 </nav>
@@ -78,7 +82,7 @@ $crudMessageBox = new CRUD_ResultContentPopulator();
                         // * Display table data otherwise display error message
                         $usersDbAccess = new UsersDBAccess($budgetDBInfo, "readAll");
                         $crudResult = $usersDbAccess->ReadAll();
-                        $crudMessageBox->DisplayCRUDDataRow($crudResult,"./addeditUser.php","../script/php/dbAccess/usersDataDbAccessController.php")
+                        $crudMessageBox->DisplayCRUDDataRow($crudResult,"./addeditUser.php","../../script/php/dbAccess/controllers/usersDataDbAccessController.php")
                         ?>
                     </tbody>
                 </table>
