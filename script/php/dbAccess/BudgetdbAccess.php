@@ -81,7 +81,7 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
                 $today = date("Y-m-d");
                 $sql = <<<SQL
                 INSERT INTO expenseTypes (name,dateCreated,dateModified)
-                VALUES ($dataObject)
+                VALUES ($dataObject->name,$today,$today)
                 SQL;
                 if($conn->query($sql)){
                     $this->crudResult->message = <<<MESSAGE
@@ -165,7 +165,7 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
         }finally{
             $conn->close();
         }
-        
+
         return $this->crudResult;
     }
 }
