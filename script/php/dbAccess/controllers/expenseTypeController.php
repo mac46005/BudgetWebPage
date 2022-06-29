@@ -19,6 +19,11 @@ switch ($crudResult->dataMode) {
     case "readAll":
         break;
     case "write":
+        if($crudResult->isComplete == FALSE){
+            header("location:../../../datamanager/expenses/addeditExpenseType.php");
+        }else{
+            header("location:../../../datamanager/expense/expenseTypeDataManager.php");
+        }
         break;
     case "update":
         break;
