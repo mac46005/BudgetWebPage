@@ -37,6 +37,7 @@ $crudMessageBox = new CRUD_ResultContentPopulator();
             <h1>Users Data Manager</h1>
         </div>
     </header>
+    
     <main>
     <?php
 
