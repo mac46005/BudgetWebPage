@@ -10,10 +10,67 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
     }
     public function ReadOne($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id, name, dateCreated, dateModified FROM expenseTypes WHERE id = '$id'
+                SQL;
+
+                if($result = $conn->query($sql)){
+                    $row = $result->fetch_row();
+                    $expenseType = new ExpenseType($row[0],$row[1],$row[2],$row[3]);
+                    $this->crudResult->dataObject = $expenseType;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to load sql query<br/>
+                    $conn->error<br/>
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to sql database<br/>
+                $conn->error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
+
         return $this->crudResult;
     }
     public function ReadAll(): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id, name, dateCreated, dateModified
+                FROM expenseTypes
+                SQL;
+                if($result = $conn->query($sql)){
+                    $this->crudResult->dataObject = $result;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to run query on sql database<br/>
+                    $conn->error<br/>
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->error<br/>
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
     public function Write($object): CRUD_Result
