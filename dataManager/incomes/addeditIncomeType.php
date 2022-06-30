@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <?php
-    require '../script/php/htmlProcessing/crudMessageBox.php';
-    require '../script/php/dbAccess/models/incomeType.php';
-    require '../script/php/dbAccess/MySqliClasses.php';
-    require '../script/php/dbAccess/BudgetdbAccess.php';
+    
+    require '../../script/php/dbAccess/models/incomeType.php';
+    require '../../script/php/dbAccess/MySqliClasses.php';
+    require '../../script/php/dbAccess/BudgetdbAccess.php';
+    require '../../script/php/htmlProcessing/crudMessageBox.php';
+
     $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "write";
     $id = (isset($_GET['id']))? $_GET['id'] : 0;
     $formTitle = ($dataMode == "write" || $dataMode == NULL)? "Add" : "Update";
@@ -16,18 +18,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $fomTitle; ?> Income Type</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components/_nav.css">
-    <link rel="stylesheet" href="../css/components/_forms.css">
-    <link rel="stylesheet" href="../css/sections/addeditincometype.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/components/_nav.css">
+    <link rel="stylesheet" href="../../css/components/_forms.css">
+    <link rel="stylesheet" href="../../css/sections/addeditincometype.css">
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <h4><a href="../dashBoard.php">BudgetApp</a></h4>
+            <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./manageTypeIndex.html">Manage Types</a></li>
+                <li><a href="./incomeTypesDataManager.php">Manage Types</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
@@ -51,7 +53,7 @@
         // If error found it will display error message where needed.
         $dataObject = NULL;
         if($dataMode == "update"){
-            require_once '../script/php/dbAccess/BudgetDbInfo.php';
+            require_once '../../script/php/dbAccess/BudgetDbInfo.php';
             $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,"readOne"),$id);
         }
         ?>
@@ -59,7 +61,6 @@
 
 
         <div class="main-container">
-        // * if dataObject is not NULL it will be used to display update information of current object.
             <form action="../script/php/dbAccess/incomeTypeDBAccessController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 

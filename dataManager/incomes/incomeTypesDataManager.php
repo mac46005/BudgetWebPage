@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <?php
-    require '../script/php/htmlProcessing/crudMessageBox.php';
-    require '../script/php/dbAccess/MySqliClasses.php';
-    require_once '../script/php/dbAccess/BudgetDbInfo.php';
-    require_once '../script/php/dbAccess/models/incomeType.php';
-    require_once '../script/php/dbAccess/BudgetdbAccess.php';
+
+    require '../../script/php/dbAccess/models/incomeType.php';
+    require '../../script/php/dbAccess/MySqliClasses.php';
+    require '../../script/php/dbAccess/BudgetdbAccess.php';
+    require '../../script/php/htmlProcessing/crudMessageBox.php';
+    require_once '../../script/php/dbAccess/BudgetDbInfo.php';
 
 
     $crud_ResultContentPopulator = new CRUD_ResultContentPopulator();
@@ -15,10 +16,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Income Type Data Manager</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/components/_nav.css">
-    <link rel="stylesheet" href="../css/components/_dashboard.css">
-    <link rel="stylesheet" href="../css/sections/incomeTypeData.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/components/_nav.css">
+    <link rel="stylesheet" href="../../css/components/_dashboard.css">
+    <link rel="stylesheet" href="../../css/sections/incomeTypeData.css">
 </head>
 <body>
     <nav>
