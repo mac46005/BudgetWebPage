@@ -60,7 +60,7 @@
             }
             
             ?>
-            <form method="post" action="../../script/php/dbAccess/controllers/usersDataDBAccessController.php">
+            <form method="post" action="../../script/php/dbAccess/controllers/usersDBController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
                 <input class="hide" type="text" name="id" id="id" value="<?php echo (isset($_GET['id']))? $_GET['id'] : 0;?>">
 

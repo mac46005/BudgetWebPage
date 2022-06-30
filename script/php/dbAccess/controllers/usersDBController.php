@@ -39,7 +39,7 @@ if($crudResult != NULL){
             break;
         case "update":
             if($crudResult->isComplete == FALSE){
-                header("location:../../../../dataManager/users/addEditUser.php?dataMode=update&id=$crudResult->dataObject->id");
+                header("location:../../../../dataManager/users/addeditUser.php?dataMode=update&id=" . $crudResult->dataObject->id);
             }else{
                 header("location:../../../../dataManager/users/usersDataManager.php");
             }
