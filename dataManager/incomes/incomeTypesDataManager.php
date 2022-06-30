@@ -24,10 +24,10 @@
 <body>
     <nav>
         <div class="nav-container">
-            <h4><a href="../dashBoard.php">BudgetApp</a></h4>
+            <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./DataManagerHome.html">Data Manager</a></li>
+                <li><a href="../DataManagerHome.html">Data Manager</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
@@ -44,6 +44,7 @@
         session_start();
         $crud_ResultContentPopulator->DisplaySessionMessage();
         ?>
+        <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container dashboard">
             <form action="">
                 <nav>
@@ -71,7 +72,7 @@
                         $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readAll");
                         $crudTableResult = $incomeTypesDBAccess->ReadAll();
                         
-                        $crud_ResultContentPopulator->DisplayCRUDDataRow($crudTableResult,"./addeditIncomeType.php","../script/php/dbAccess/incomeTypeDBAccessController.php");
+                        $crud_ResultContentPopulator->DisplayCRUDDataRow($crudTableResult,"./addeditIncomeType.php","../../script/php/dbAccess/controllers/incomeTypeDBController.php");
                         ?>
                     </tbody>
                 </table>

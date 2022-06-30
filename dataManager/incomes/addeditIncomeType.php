@@ -44,27 +44,23 @@
         <?php
         $crudMessageBox = new CRUD_ResultContentPopulator();
 
-        // Finds $_SESSION['crudResult'] and displays if isset
         session_start();
         $crudMessageBox->DisplaySessionMessage();
 
-
-        // If dataMode = update. Will get object needed for updating from db.
-        // If error found it will display error message where needed.
         $dataObject = NULL;
         if($dataMode == "update"){
             require_once '../../script/php/dbAccess/BudgetDbInfo.php';
             $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new IncomeTypesDBAccess($budgetDBInfo,"readOne"),$id);
         }
         ?>
-        <script src="../script/js/crudResultMessage.js"></script>
+        <script src="../../script/js/crudResultMessage.js"></script>
 
 
         <div class="main-container">
-            <form action="../script/php/dbAccess/incomeTypeDBAccessController.php">
+            <form action="../../script/php/dbAccess/controllers/incomeTypeDBController.php">
                 <input class="hide" type="text" name="dataMode" id="dataMode" value="<?php echo $dataMode; ?>">
 
-                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($dataObject->id))? $dataObject->id : ""; ?>">
+                <input class="hide" type="text" name="id" id="id" placeholder="0" value="<?php echo (isset($dataObject->id))? $dataObject->id : 0; ?>">
 
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" value="<?php echo (isset($dataObject))? $dataObject->name : ""; ?>">
