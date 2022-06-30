@@ -55,15 +55,18 @@
         $dataObject = NULL;
         if($dataMode == "update"){
             $dataObject = $crudMessageBox->DisplayUpdateErrorMessage(new ExpenseTypesDBAccess($budgetDBInfo,"readOne"),$id);
+            $id = $dataObject->id;
+            $name = $dataObject->name;
         }
         ?>
+        <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container">
-            <form action="../../script/php/dbAccess/controllers/" method="post">
-                <input class="hide" type="text" name="dataMode" id="dateMode">
-                <input class="hide" type="text" name="id" id="id">
+            <form action="../../script/php/dbAccess/controllers/expenseTypeDBController.php" >
+                <input class="hide" type="text" name="dataMode" id="dateMode" value="<?php echo $dataMode; ?>">
+                <input class="hide" type="text" name="id" id="id" value="<?php echo $id; ?>">
 
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" value="<?php echo $name; ?>">
 
                 <input type="submit" value="<?php echo $formNameType?>">
             </form>

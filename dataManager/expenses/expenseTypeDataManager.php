@@ -3,11 +3,12 @@
 
 <head>
     <?php
-    
+    require '../../script/php/dbAccess/models/expenseType.php';
     require '../../script/php/dbAccess/MySqliClasses.php';
     require '../../script/php/dbAccess/BudgetdbAccess.php';
     require '../../script/php/htmlProcessing/crudMessageBox.php';
     require_once '../../script/php/dbAccess/BudgetDbInfo.php';
+
     $crudMessageBox = new CRUD_ResultContentPopulator();
     ?>
     <meta charset="UTF-8">
@@ -48,6 +49,7 @@
         session_start();
         $crudMessageBox->DisplaySessionMessage();
         ?>
+        <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container dashboard">
             <nav>
                 <input type="text" name="search-box" id="" placeholder="search...">
@@ -67,7 +69,7 @@
                 <tbody>
                     <?php
                     $usersDbAccess = new ExpenseTypesDBAccess($budgetDBInfo,"readAll");
-                    $crudMessageBox->DisplayCRUDDataRow($usersDbAccess->ReadAll(),"","");
+                    $crudMessageBox->DisplayCRUDDataRow($usersDbAccess->ReadAll(),"./addeditExpenseType.php","../../script/php/dbAccess/controllers/expenseTypeDBController.php");
                     ?>
                 </tbody>
             </table>

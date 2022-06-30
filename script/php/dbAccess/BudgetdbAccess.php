@@ -2,7 +2,7 @@
 
 
 
-class ExpenseTypesDBAccess extends AccessMySqliDB{
+class ExpenseTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "", $dataObject = "")
     {
         parent::__construct($sqlInfo,$dataMode,$dataObject);
@@ -81,8 +81,12 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
                 $today = date("Y-m-d");
                 $sql = <<<SQL
                 INSERT INTO expenseTypes (name,dateCreated,dateModified)
-                VALUES ($dataObject->name,$today,$today)
+                VALUES ('$dataObject->name','$today','$today')
                 SQL;
+
+                $this->crudResult->dataObject->dateCreated = $today;
+                $this->crudResult->dataObject->dateModified = $today;
+
                 if($conn->query($sql)){
                     $this->crudResult->message = <<<MESSAGE
                     Successfully WRITE in database<br/>
@@ -140,8 +144,8 @@ class ExpenseTypesDBAccess extends AccessMySqliDB{
         try {
             if($conn = $this->Connect()){
                 $sql = <<<SQL
-                DELETE expenseTypes
-                WHERE id = '$id'
+                DELETE FROM expenseTypes
+                WHERE id = $id
                 SQL;
                 if($conn->query($sql)){
                     $this->crudResult->message = <<<MESSAGE
