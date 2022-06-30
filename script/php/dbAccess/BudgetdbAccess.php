@@ -125,6 +125,17 @@ class ExpenseTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 dateModified = '$today'
                 WHERE id = '$dataObject->id'
                 SQL;
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully UPDATE item in database
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to UPDATE using sql<br/>
+                    $conn->error
+                    MESSAGE;
+                }
             }else{
                 $this->crudResult->message = <<<MESSAGE
                 Failed to connect to sql database<br/>

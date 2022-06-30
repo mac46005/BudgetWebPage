@@ -34,7 +34,7 @@ switch ($crudResult->dataMode) {
         if($crudResult->isComplete == FALSE){
             header("location:../../../../datamanager/expenses/addeditExpenseType.php?dataMode=update&id=" . $crudResult->dataObject->id);
         }else{
-            header("location:../../../../datamanger/expenses/expenseTypeDataManager.php");
+            header("location:../../../../datamanager/expenses/expenseTypeDataManager.php");
         }
         break;
     case "delete":
