@@ -24,7 +24,7 @@ class CRUD_ResultContentPopulator {
 
     }
 
-    function DisplayTableData_OrErrorMessage(CRUD_Result $crudResult,$editLinkName,$deleteLinkName){
+    function AttemptToDisplayTableData(CRUD_Result $crudResult,$editLinkName,$deleteLinkName){
         if($crudResult->isComplete == TRUE){
             while($row = $crudResult->dataObject->fetch_row()){
                 $rowString = "<tr>";

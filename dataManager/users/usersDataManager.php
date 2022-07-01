@@ -82,7 +82,7 @@ $crudMessageBox = new CRUD_ResultContentPopulator();
                         // * Display table data otherwise display error message
                         $usersDbAccess = new UsersDBAccess($budgetDBInfo, "readAll");
                         $crudResult = $usersDbAccess->ReadAll();
-                        $crudMessageBox->DisplayCRUDDataRow($crudResult,"./addeditUser.php","../../script/php/dbAccess/controllers/usersDbController.php")
+                        $crudMessageBox->AttemptToDisplayTableData($crudResult,"./addeditUser.php","../../script/php/dbAccess/controllers/usersDbController.php")
                         ?>
                     </tbody>
                 </table>

@@ -66,7 +66,8 @@
                 </thead>
                 <tbody>
                     <?php
-                    $crudMessageBox->DisplayCRUDDataRow();
+                    $expenseSubTypeDB = new ExpenseSubTypesDBAccess($budgetDBInfo,"readAll");
+                    $crudMessageBox->AttemptToDisplayTableData($expenseSubTypeDB->ReadAll(),"","");
                     ?>
                 </tbody>
             </table>

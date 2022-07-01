@@ -72,7 +72,7 @@
                         $incomeTypesDBAccess = new IncomeTypesDBAccess($budgetDBInfo,"readAll");
                         $crudTableResult = $incomeTypesDBAccess->ReadAll();
                         
-                        $crud_ResultContentPopulator->DisplayCRUDDataRow($crudTableResult,"./addeditIncomeType.php","../../script/php/dbAccess/controllers/incomeTypeDBController.php");
+                        $crud_ResultContentPopulator->AttemptToDisplayTableData($crudTableResult,"./addeditIncomeType.php","../../script/php/dbAccess/controllers/incomeTypeDBController.php");
                         ?>
                     </tbody>
                 </table>

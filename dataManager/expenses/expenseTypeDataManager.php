@@ -69,7 +69,7 @@
                 <tbody>
                     <?php
                     $usersDbAccess = new ExpenseTypesDBAccess($budgetDBInfo,"readAll");
-                    $crudMessageBox->DisplayCRUDDataRow($usersDbAccess->ReadAll(),"./addeditExpenseType.php","../../script/php/dbAccess/controllers/expenseTypeDBController.php");
+                    $crudMessageBox->AttemptToDisplayTableData($usersDbAccess->ReadAll(),"./addeditExpenseType.php","../../script/php/dbAccess/controllers/expenseTypeDBController.php");
                     ?>
                 </tbody>
             </table>
