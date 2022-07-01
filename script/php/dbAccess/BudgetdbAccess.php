@@ -36,15 +36,72 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
             }
         } catch (\Throwable $th) {
             $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
         }
         return $this->crudResult;
     }
+
     public function ReadAll(): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id,name,expenseType_Id,dateCreated,dateModified
+                FROM expenseSubTypes
+                SQL;
+
+                if($result = $conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->dataObject = $result;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to sql database<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
-    public function Write($object): CRUD_Result
+    public function Write($dataObject): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $today = date("Y-m-d");
+                $sql = <<<SQL
+                INSERT INTO expensesubtypes (name,expenseType_Id,dateCreated,dateModified)
+                VALUES('$dataObject->name', '$dataObject->expenseType_Id','$today','$today')
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Succesfully WRITE item into database.<br/>
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to run query.<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
     public function Update($dataObject): CRUD_Result
@@ -58,6 +115,26 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class ExpenseTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "", $dataObject = "")

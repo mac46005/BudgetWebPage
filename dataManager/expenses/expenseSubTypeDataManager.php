@@ -44,13 +44,14 @@
         <?php
         $crudMessageBox = new CRUD_ResultContentPopulator();
 
+        session_start();
         $crudMessageBox->DisplaySessionMessage();
         ?>
         <div class="main-container dashboard">
             <nav>
                 <input type="text" name="searchbox" id="" class="search-box" placeholder="search...">
                 <ul>
-                    <li><a href="#">Add Item</a></li>
+                    <li><a href="./addeditExpenseSubType.php">Add Item</a></li>
                 </ul>
             </nav>
 
@@ -79,5 +80,6 @@
 
         </div>
     </footer>
+    <script src="../../script/js/crudResultMessage.js"></script>
 </body>
 </html>

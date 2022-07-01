@@ -84,5 +84,6 @@
             </form>
         </div>
     </main>
+    <script src="../../script/js/crudResultMessage.js"></script>
 </body>
 </html>

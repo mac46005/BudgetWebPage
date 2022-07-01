@@ -2,7 +2,7 @@
 class ExpenseSubType{
     public $id = 0;
     public $name = "";
-    public $expenseType_id = 0;
+    public $expenseType_Id = 0;
     public $dateCreated = "";
     public $dateModified = "";
 
@@ -10,7 +10,7 @@ class ExpenseSubType{
     {
         $this->id = $id;
         $this->name = $name;
-        $this->expenseType_id = $expenseType_id;
+        $this->expenseType_Id = $expenseType_id;
         $this->dateCreated = $dateCreated;
         $this->dateModified = $dateModified;
     }
@@ -20,7 +20,7 @@ class ExpenseSubType{
         $toString = <<<STRING
         id: $this->id<br/>
         name: $this->name<br/>
-        expenseType_id: $this->expenseType_id<br/>
+        expenseType_id: $this->expenseType_Id<br/>
         dateCreated: $this->dateCreated<br/>
         dateModified: $this->dateModified<br/>
         STRING;
