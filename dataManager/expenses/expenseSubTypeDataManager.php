@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <?php
-
-    
+    require '../../script/php/dbAccess/models/expenseSubType.php';
+    require '../../script/php/dbAccess/MySqliClasses.php';
+    require '../../script/php/dbAccess/BudgetdbAccess.php';
+    require_once '../../script/php/dbAccess/BudgetDbInfo.php';    
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,5 +36,38 @@
             </h2>
         </div>
     </header>
+
+    <main>
+
+        <div class="main-container dashboard">
+            <nav>
+                <input type="text" name="searchbox" id="" class="search-box" placeholder="search...">
+                <ul>
+                    <li><a href="#">Add Item</a></li>
+                </ul>
+            </nav>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>ExpenseType</th>
+                        <th>Date Created</th>
+                        <th>Date Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+
+        </div>
+    </footer>
 </body>
 </html>
