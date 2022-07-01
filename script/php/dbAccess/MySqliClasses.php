@@ -77,6 +77,11 @@ interface IDelete{
     function Delete($id) : CRUD_Result;
 }
 
+
+interface IQuerySql{
+    function QuerySql($sql) : CRUD_Result;
+}
+
 /**
  * Basic database operations. ReadOne, ReadAll, Write, Update, Delete
  * 
@@ -100,7 +105,7 @@ interface IManipulateData{
  * Base class resposible for Manipulating data depending on the dataMode
  * @author Marco Preciado
  */
-abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
+abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD, IQuerySql{
     protected CRUD_Result $crudResult;
     const dataManipOptions = [
         "readOne",
@@ -120,7 +125,7 @@ abstract class ManipulateDataBase implements IManipulateData, IDb_CRUD{
     abstract function ReadAll() : CRUD_Result;
     abstract function Update($dataObject) : CRUD_Result;
     abstract function Delete($id) : CRUD_Result;
-
+    abstract function QuerySql($sql) : CRUD_Result;
 
     /**
      * Fires the CRUD operation needed depending on the dataMode given.
@@ -178,6 +183,33 @@ abstract class AccessMySqliDB extends ManipulateDataBase{
         }catch(\Exception $th){
             $this->crudResult->message = $th->getMessage();
         }
+    }
+
+
+
+    public function QuerySql($sql): CRUD_Result
+    {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                if($result = $conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->dataObject = $result;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = <<<MESSAGE
+            Failed to conduct query<br/>
+            $conn->error
+            MESSAGE;
+        }
+
+        return $this->crudResult;
     }
 }
 ?>

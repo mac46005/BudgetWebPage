@@ -42,6 +42,11 @@ form input[type="submit"]:hover{
 }
 
 form input[type="submit"].disabled{
-    background: linear-gradient(to bottom, gray, rgb(92, 92, 92))
+    background: linear-gradient(to bottom, gray, rgb(92, 92, 92));
 
 }
+
+form select{
+    margin-bottom: 1rem;
+}
+

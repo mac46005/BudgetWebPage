@@ -3,6 +3,7 @@
 <head>
     <?php
     require '../../script/php/dbAccess/models/expenseSubType.php';
+    require '../../script/php/dbAccess/models/expenseType.php';
     require '../../script/php/dbAccess/MySqliClasses.php';
     require '../../script/php/dbAccess/BudgetdbAccess.php';
     require '../../script/php/htmlProcessing/crudMessageBox.php';
@@ -17,7 +18,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?php echo $formName; ?> Expense SubType</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/components/_nav.css">
+    <link rel="stylesheet" href="../../css/components/_forms.css">
 </head>
 <body>
     <nav>
@@ -62,9 +66,21 @@
 
                 <label for="expenseType_Id">Expense Type:</label>
                 <select name="expenseType_Id" id="expenseType_Id">
-                    <option>Test Option</option>
+                    <?php
+                    $expenseTypeDB = new ExpenseTypesDBAccess($budgetDBInfo);
+                    $crudResult = $expenseTypeDB->QuerySql("SELECT id,name FROM expenseTypes");
+                    if($crudResult->isComplete == FALSE){
+                        $crudMessageBox->CRUDMessageBox($crudResult,"failed");
+                    }else{
+                        while($row = $crudResult->dataObject->fetch_row()){
+                            echo <<<OPTION
+                            <option value="$row[0]">$row[1]</option>
+                            OPTION;
+                        }
+                    }
+                    ?>
                 </select>
-
+                <input type="submit" value="<?php echo $formName; ?>">
             </form>
         </div>
     </main>

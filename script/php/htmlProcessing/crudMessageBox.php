@@ -23,7 +23,8 @@ class CRUD_ResultContentPopulator {
 
 
     }
-    function DisplayCRUDDataRow(CRUD_Result $crudResult,$editLinkName,$deleteLinkName){
+
+    function DisplayTableData_OrErrorMessage(CRUD_Result $crudResult,$editLinkName,$deleteLinkName){
         if($crudResult->isComplete == TRUE){
             while($row = $crudResult->dataObject->fetch_row()){
                 $rowString = "<tr>";
@@ -56,7 +57,7 @@ class CRUD_ResultContentPopulator {
         }
         return $dataObject;
     }
-    private function CRUDMessageBox(CRUD_Result $crudResult = NULL,$classItem = "") : string{
+    public function CRUDMessageBox(CRUD_Result $crudResult = NULL,$classItem = "") : string{
         $messageBox = "";
         if($crudResult != NULL){
             $messageBox = <<<MESSAGE
