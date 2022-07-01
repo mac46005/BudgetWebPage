@@ -5,7 +5,10 @@
     require '../../script/php/dbAccess/models/expenseSubType.php';
     require '../../script/php/dbAccess/MySqliClasses.php';
     require '../../script/php/dbAccess/BudgetdbAccess.php';
-    require_once '../../script/php/dbAccess/BudgetDbInfo.php';    
+    require '../../script/php/htmlProcessing/crudMessageBox.php';
+    require_once '../../script/php/dbAccess/BudgetDbInfo.php';
+    
+    
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +41,11 @@
     </header>
 
     <main>
+        <?php
+        $crudMessageBox = new CRUD_ResultContentPopulator();
 
+        $crudMessageBox->DisplaySessionMessage();
+        ?>
         <div class="main-container dashboard">
             <nav>
                 <input type="text" name="searchbox" id="" class="search-box" placeholder="search...">
@@ -58,7 +65,9 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    <?php
+                    $crudMessageBox->DisplayCRUDDataRow();
+                    ?>
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,63 @@
 <?php
 
+class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
+    function __construct(MySqliServerInfo $sqlInfo, $dataMode = "",$dataObject = "")
+    {
+        parent::__construct($sqlInfo,$dataMode,$dataObject);
+        $this->crudResult->title = "ExpenseSubTypesDBAccess";
+    }
+    public function ReadOne($id): CRUD_Result
+    {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id, name, expenseType_Id, dateCreated, dateModified
+                FROM expenseSubTypes
+                WHERE id = $id
+                SQL;
+                
+                if($result = $conn->query($sql)){
+                    $row = $result->fetch_row();
+                    $expenseSubType = new ExpenseSubType($row[0],$row[1],$row[2],$row[3],$row[4]);
+                    $this->crudResult->dataObject = $expenseSubType;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to connect to database.<br/>
+                    $conn->connect_error
+                    MESSAGE;
+                }
 
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to sql database.<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th->getMessage();
+        }
+        return $this->crudResult;
+    }
+    public function ReadAll(): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Write($object): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Update($dataObject): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Delete($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+
+
+}
 
 class ExpenseTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "", $dataObject = "")
