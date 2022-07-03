@@ -47,6 +47,35 @@ class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     }
     public function ReadAll(): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id, name, incomeType_Id, dateCreated, dateModified
+                FROM incomesubtypes
+                SQL;
+
+                if($result = $conn->query($sql)){
+                    $this->crudResult->dataObject = $result;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->connect_error<br/>
+                $conn->error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
     public function Write($object): CRUD_Result
