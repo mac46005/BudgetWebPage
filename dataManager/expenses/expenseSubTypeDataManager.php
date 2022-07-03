@@ -68,7 +68,17 @@
                 <tbody>
                     <?php
                     $expenseSubTypeDB = new ExpenseSubTypesDBAccess($budgetDBInfo,"readAll");
-                    $crudMessageBox->AttemptToDisplayTableData($expenseSubTypeDB->ReadAll(),"./addeditExpenseSubType.php","../../script/php/dbAccess/controllers/expenseSubTypeDBController.php");
+                    $crudResult = $expenseSubTypeDB->QuerySql("SELECT est.id, est.name, et.id, et.name, est.dateCreated, est.dateModified FROM expensesubtypes est INNER JOIN expensetypes et ON est.expenseType_Id = et.id");
+                    if($crudResult->isComplete == FALSE){
+                        $crudMessageBox->CRUDMessageBox($crudResult, "failed");
+                    }else{
+                        $data = [];
+                        while($row = $crudResult->dataObject->fetch_row()){
+                            $rowOutput = <<<ROW
+                            
+                            ROW;
+                        }
+                    }
                     ?>
                 </tbody>
             </table>
