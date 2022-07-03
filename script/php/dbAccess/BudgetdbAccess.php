@@ -1,5 +1,27 @@
 <?php
 
+class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
+    public function ReadOne($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function ReadAll(): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Write($object): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Update($dataObject): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+    public function Delete($id): CRUD_Result
+    {
+        return $this->crudResult;
+    }
+}
 class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "",$dataObject = "")
     {
