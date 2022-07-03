@@ -50,7 +50,7 @@
                 <nav>
                     <input type="text" name="search-box" id="" placeholder="search...">
                     <ul>
-                        <li><a href="./addEditIncomeType.php?dataMode=write">Add Item</a></li>
+                        <li><a href="./addeditIncomeSubType.php">Add Item</a></li>
                     </ul>
                 </nav>
 

@@ -47,11 +47,46 @@
 
     <main>
         <?php
-
+        $crudMessageBox = new CRUD_ResultContentPopulator();
+        
+        session_start();
+        $crudMessageBox->DisplaySessionMessage();
+        $dataObject = NULL;
+        if($dataMode == "update"){
+            
+        }
         ?>
         <div class="main-container">
             <form action="">
+                <input type="text" name="dataMode" id="dataMode" class="hide" value="<?php echo $dataMode; ?>">
+                <input type="text" name="id" id="id" class="hide" value="<?php echo $id;?>">
 
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="<?php echo (isset($dataObject))? $dataObject->name : ""; ?>">
+
+
+                <label for="amount">Amount</label>
+                <input type="number" name="amount" id="amount" value="<?php echo (isset($dataObject))? $dataObject->amount : 0;?>">
+
+                <select>
+                    <?php
+                    $incomeTypeDB = new IncomeTypesDBAccess($budgetDBInfo);
+                    $crudResult = $incomeTypeDB->QuerySql("SELECT id,name FROM incometypes");
+                    if($crudResult->isComplete == FALSE){
+                        $crudMessageBox->CRUDMessageBox($crudResult);
+                    }else{
+                        while($row = $crudResult->dataObject->fetch_row()){
+                            $isSelected = "";
+                            $isSelected = (isset($dataObject) && $dataObject->incomeType_Id == $row[0])? "selected" : "";
+                            $rowString = <<<ROW
+                            <option value="$row[0]" $isSelected>$row[1]</option>
+                            ROW;
+
+                            echo $rowString;
+                        }
+                    }
+                    ?>
+                </select>
             </form>
         </div>
     </main>
