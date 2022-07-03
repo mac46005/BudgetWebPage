@@ -75,8 +75,17 @@
                         $data = [];
                         while($row = $crudResult->dataObject->fetch_row()){
                             $rowOutput = <<<ROW
-                            
+                            <tr>
+                                <td>$row[0]</td>
+                                <td>$row[1]</td>
+                                <td>$row[3]</td>
+                                <td>$row[4]</td>
+                                <td>$row[5]</td>
+                                <td><a class="btn btn-edt" href="./addeditExpenseSubType.php?dataMode=update&id=$row[0]">Edit</a></td>
+                                <td><a class="btn btn-dlt" href="../../script/php/dbAccess/controllers/expenseSubTypeDBController.php?dataMode=delete&id=$row[0]">Delete</a></td>
+                            </tr>
                             ROW;
+                            echo $rowOutput;
                         }
                     }
                     ?>

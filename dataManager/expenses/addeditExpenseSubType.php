@@ -73,8 +73,12 @@
                         $crudMessageBox->CRUDMessageBox($crudResult,"failed");
                     }else{
                         while($row = $crudResult->dataObject->fetch_row()){
+                            $isSelected = "";
+                            if($dataObject->expenseType_Id == $row[0]){
+                                $isSelected = "selected";
+                            }
                             echo <<<OPTION
-                            <option value="$row[0]">$row[1]</option>
+                            <option value="$row[0]" $isSelected>$row[1]</option>
                             OPTION;
                         }
                     }
