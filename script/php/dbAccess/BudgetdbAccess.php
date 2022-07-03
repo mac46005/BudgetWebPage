@@ -1,8 +1,48 @@
 <?php
 
 class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
+    function __construct(MySqliServerInfo $sqlInfo, $dataMode = "",$dataObject = "")
+    {
+        parent::__construct($sqlInfo,$dataMode,$dataObject);
+        $this->crudResult->title = "IncomeSubTypesDBAccess";
+    }
+
+
     public function ReadOne($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT id,name,incomeType_Id,dateCreated,dateModified
+                FROM incomesubtypes
+                WHERE id = '$id'
+                SQL;
+
+                if($result = $conn->query($sql)){
+                    $row = $result->fetch_row();
+                    $incomeSubType = new IncomeSubType($row[0],$row[1],$row[2],$row[3],$row[4]);
+                    $this->crudResult->dataObject = $incomeSubType;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect.<br/>
+                $conn->connect_error<br/>
+                $conn->error
+                MESSAGE;
+            } 
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+        } finally{
+            $conn->close();
+        }
+
         return $this->crudResult;
     }
     public function ReadAll(): CRUD_Result
@@ -22,6 +62,33 @@ class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         return $this->crudResult;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "",$dataObject = "")
     {
