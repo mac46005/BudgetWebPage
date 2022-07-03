@@ -18,12 +18,13 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 SQL;
                 
                 if($result = $conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
                     $row = $result->fetch_row();
                     $expenseSubType = new ExpenseSubType($row[0],$row[1],$row[2],$row[3],$row[4]);
                     $this->crudResult->dataObject = $expenseSubType;
                 }else{
                     $this->crudResult->message = <<<MESSAGE
-                    Failed to connect to database.<br/>
+                    Failed Sql query.<br/>
                     $conn->connect_error
                     MESSAGE;
                 }
@@ -104,12 +105,86 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         }
         return $this->crudResult;
     }
+
     public function Update($dataObject): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                UPDATE expenseSubTypes
+                SET
+                name = '$this->crudResult->dataObject->name',
+                expenseType_Id = '$this->crudResult->dataObject->expenseType_Id'
+                id = '$this->crudResult->dataObject->id'
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully UPDATE item in database
+                    MESSAGE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query.<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to sql database.<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = <<<MESSAGE
+            Failed to process.<br/>
+            $conn->connect_error<br/>
+            $th->getMessage()
+            MESSAGE;
+        } finally {
+            $conn->close();
+        }
         return $this->crudResult;
     }
+
     public function Delete($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                DELETE FROM expensesubtypes
+                WHERE id = '$id'
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully DELETE item in database.
+                    MESSAGE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    ERROR FOUND<br/>
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                ERROR FOUND<br/>
+                Faile to connect to database<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = <<<MESSAGE
+            ERROR FOUND<br/>
+            $conn->error<br/>
+            $conn->connect_error<br/>
+            MESSAGE;
+        } finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
 

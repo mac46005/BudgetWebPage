@@ -31,8 +31,16 @@ switch($dataMode){
         }
         break;
     case "update":
+        if($crudResult->isComplete == FALSE){
+            header("location:../../../../datamanager/expenses/addeditExpenseSubType.php");
+        }else{
+            header("location:../../../../datamanager/expenses/expenseSubTypeDataManager.php");
+        }
         break;
     case "delete":
+        header("location:../../../../datamanager/expenses/expenseSubTypeDataManager.php");
         break;
 }
+
+
 ?>

@@ -68,7 +68,7 @@
                 <tbody>
                     <?php
                     $expenseSubTypeDB = new ExpenseSubTypesDBAccess($budgetDBInfo,"readAll");
-                    $crudMessageBox->AttemptToDisplayTableData($expenseSubTypeDB->ReadAll(),"","");
+                    $crudMessageBox->AttemptToDisplayTableData($expenseSubTypeDB->ReadAll(),"./addeditExpenseSubType.php","../../script/php/dbAccess/controllers/expenseSubTypeDBController.php");
                     ?>
                 </tbody>
             </table>
