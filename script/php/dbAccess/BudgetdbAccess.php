@@ -111,18 +111,21 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
         $conn = new mysqli();
         try {
             if($conn = $this->Connect()){
+                $today = date("Y-m-d");
                 $sql = <<<SQL
                 UPDATE expenseSubTypes
                 SET
-                name = '$this->crudResult->dataObject->name',
-                expenseType_Id = '$this->crudResult->dataObject->expenseType_Id'
-                id = '$this->crudResult->dataObject->id'
+                name = '$dataObject->name',
+                expenseType_Id = '$dataObject->expenseType_Id',
+                dateModified = '$today'
+                WHERE id = '$dataObject->id'
                 SQL;
 
                 if($conn->query($sql)){
                     $this->crudResult->message = <<<MESSAGE
                     Successfully UPDATE item in database
                     MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
                 }else{
                     $this->crudResult->message = <<<MESSAGE
                     Failed to process sql query.<br/>
@@ -139,7 +142,9 @@ class ExpenseSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
             $this->crudResult->message = <<<MESSAGE
             Failed to process.<br/>
             $conn->connect_error<br/>
-            $th->getMessage()
+            $conn->error<br/>
+            $th->getMessage()<bt/>
+            $th
             MESSAGE;
         } finally {
             $conn->close();
