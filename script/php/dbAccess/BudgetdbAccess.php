@@ -88,6 +88,17 @@ class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
                 INSERT INTO incomesubtypes (name, incomeType_Id, dateCreated, dateModified)
                 VALUES('$dataObject->name', '$dataObject->incomeType_Id', '$today', '$today')
                 SQL;
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully WRITE item into database.
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
             }else{
                 $this->crudResult->message = <<<MESSAGE
                 Failed to connect to database<br/>
@@ -104,6 +115,42 @@ class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     }
     public function Update($dataObject): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $today = date("Y-m-d");
+                $sql = <<<SQL
+                UPDATE incomesubtypes
+                SET
+                name = '$dataObject->name',
+                incomeType_Id = '$dataObject->incomeType_Id',
+                dateModified = '$today'
+                WHERE id = '$dataObject->id'
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully UPDATE item in database
+                    MESSAGE;
+                    $this->crudResult->isComplete = TRUE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->connect_error<br/>
+                $conn->error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+        }finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
     public function Delete($id): CRUD_Result
