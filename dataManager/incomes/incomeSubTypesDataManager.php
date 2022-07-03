@@ -7,6 +7,8 @@
     require '../../script/php/dbAccess/BudgetdbAccess.php';
     require '../../script/php/htmlProcessing/crudMessageBox.php';
     require_once '../../script/php/dbAccess/BudgetDbInfo.php';
+
+    $crudMessageBox = new CRUD_ResultContentPopulator();
     ?>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,7 +42,7 @@
         <?php
         // * Displays $_SESSION['crudResult'] if found in session.
         session_start();
-        $crud_ResultContentPopulator->DisplaySessionMessage();
+        $crudMessageBox->DisplaySessionMessage();
         ?>
         <script src="../../script/js/crudResultMessage.js"></script>
         <div class="main-container dashboard">
@@ -67,7 +69,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        
+
                         ?>
                     </tbody>
                 </table>
