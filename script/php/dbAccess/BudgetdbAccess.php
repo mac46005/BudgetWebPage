@@ -8,7 +8,23 @@ class IncomeItemsDBAccess extends AccessMySqliDB implements IDb_CRUD{
     }
     public function ReadOne($id): CRUD_Result
     {
-        
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                SELECT 
+                SQL;
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+        } finally{
+            $conn->close();
+        }
         return $this->crudResult;
     }
 }
