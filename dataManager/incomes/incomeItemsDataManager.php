@@ -44,6 +44,8 @@
                     <th>Income Type</th>
                     <th>Income SubType</th>
                     <th>Reference Number</th>
+                    <th>TimeStamp</th>
+                    <th>DateModified</th>
                 </tr>
             </thead>
             <tbody>

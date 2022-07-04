@@ -27,8 +27,8 @@
             <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="../DataManagerHome.html">Data Manager</a></li>
-                <li><a href="#">Mng Income</a></li>
+                <li><a href="../DataManagerHome.html">Mng System Topics</a></li>
+                <li><a href="../incomes/incomeItemsDataManager.php">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
         </div>

@@ -29,7 +29,7 @@
             <h4><a href="../../dashBoard.php">BudgetApp</a></h4>
 
             <ul class="nav-menu">
-                <li><a href="./incomeTypesDataManager.php">Manage Types</a></li>
+                <li><a href="./incomeTypesDataManager.php">Mng System Topics</a></li>
                 <li><a href="#">Mng Income</a></li>
                 <li><a href="#">Mng Expense</a></li>
             </ul>
