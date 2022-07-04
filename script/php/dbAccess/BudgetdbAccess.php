@@ -155,6 +155,35 @@ class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     }
     public function Delete($id): CRUD_Result
     {
+        $conn = new mysqli();
+        try {
+            if($conn = $this->Connect()){
+                $sql = <<<SQL
+                DELETE FROM incomesubtypes
+                WHERE id = '$id'
+                SQL;
+
+                if($conn->query($sql)){
+                    $this->crudResult->isComplete = TRUE;
+                    $this->crudResult->message = <<<MESSAGE
+                    Successfully DELETE item in database.
+                    MESSAGE;
+                }else{
+                    $this->crudResult->message = <<<MESSAGE
+                    Failed to process sql query<br/>
+                    $conn->error
+                    MESSAGE;
+                }
+
+            }else{
+                $this->crudResult->message = <<<MESSAGE
+                Failed to connect to database<br/>
+                $conn->connect_error
+                MESSAGE;
+            }
+        } catch (\Throwable $th) {
+            $this->crudResult->message = $th;
+        }
         return $this->crudResult;
     }
 }
