@@ -1,5 +1,18 @@
 <?php
 
+class IncomeItemsDBAccess extends AccessMySqliDB implements IDb_CRUD{
+    function __construct(MySqliServerInfo $sqlInfo, $dataMode = "", $dataObject = "")
+    {
+        parent::__construct($sqlInfo,$dataMode,$dataObject);
+        $this->crudResult->title = "IncomeItemsDBAccess";
+    }
+    public function ReadOne($id): CRUD_Result
+    {
+        
+        return $this->crudResult;
+    }
+}
+
 class IncomeSubTypesDBAccess extends AccessMySqliDB implements IDb_CRUD{
     function __construct(MySqliServerInfo $sqlInfo, $dataMode = "",$dataObject = "")
     {
