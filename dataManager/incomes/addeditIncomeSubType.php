@@ -57,16 +57,12 @@
         }
         ?>
         <div class="main-container">
-            <form action="">
+            <form action="../../script/php/dbAccess/controllers/incomeSubTypeDBController.php">
                 <input type="text" name="dataMode" id="dataMode" class="hide" value="<?php echo $dataMode; ?>">
                 <input type="text" name="id" id="id" class="hide" value="<?php echo $id;?>">
 
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" value="<?php echo (isset($dataObject))? $dataObject->name : ""; ?>">
-
-
-                <label for="amount">Amount</label>
-                <input type="number" name="amount" id="amount" value="<?php echo (isset($dataObject))? $dataObject->amount : 0;?>">
 
                 <select>
                     <?php
@@ -87,6 +83,8 @@
                     }
                     ?>
                 </select>
+
+                <input type="submit" value="<?php echo $formName ?>">
             </form>
         </div>
     </main>

@@ -14,5 +14,20 @@ $incomeType_Id = (isset($_GET['incomeType_Id']))? $_GET['incomeType_Id'] : 0;
 $note = (isset($_GET['note']))? $_GET['note'] : "";
 
 $incomeSubType = new IncomeSubType($id, $name,$amount,$incomeType_Id,$note);
+$incomeSubTypeDB = new IncomeSubTypesDBAccess($budgetDBInfo,$dataMode,$incomeSubType);
 
+$crudResult = $incomeSubTypeDB->ManipulateData();
+
+switch($crudResult->dataMode){
+    case "readOne":
+        break;
+    case "readAll":
+        break;
+    case "write":
+        break;
+    case "update":
+        break;
+    case "delete":
+        break;
+}
 ?>
