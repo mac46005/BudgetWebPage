@@ -3,7 +3,7 @@
 
 <head>
     <?php
-    // ! ADD CLASS IncomeSUbTYPE
+    require '../../script/php/dbAccess/models/incomeSubType.php';
     require '../../script/php/dbAccess/models/expenseType.php';
     require '../../script/php/dbAccess/MySqliClasses.php';
     require '../../script/php/dbAccess/BudgetdbAccess.php';
@@ -53,7 +53,13 @@
         $crudMessageBox->DisplaySessionMessage();
         $dataObject = NULL;
         if($dataMode == "update"){
-            
+            $incomeSubTypeDB = new IncomeSubTypesDBAccess($budgetDBInfo);
+            $crudResult = $incomeSubTypeDB->ReadOne($id);
+            if($crudResult->isComplete == FALSE){
+                $crudMessageBox->CRUDMessageBox($crudResult, "failed");
+            }else{
+                $dataObject = $crudResult->dataObject;
+            }
         }
         ?>
         <div class="main-container">
@@ -64,7 +70,7 @@
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" value="<?php echo (isset($dataObject))? $dataObject->name : ""; ?>">
 
-                <select>
+                <select name="incomeType_Id" id="incomeType_Id">
                     <?php
                     $incomeTypeDB = new IncomeTypesDBAccess($budgetDBInfo);
                     $crudResult = $incomeTypeDB->QuerySql("SELECT id,name FROM incometypes");

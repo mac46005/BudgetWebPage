@@ -9,21 +9,26 @@ $dataMode = (isset($_GET['dataMode']))? $_GET['dataMode'] : "";
 
 $id = (isset($_GET['id']))? $_GET['id'] : 0;
 $name = (isset($_GET['name']))? $_GET['name'] : "";
-$amount = (isset($_GET['amount']))? $_GET['amount'] : 0;
 $incomeType_Id = (isset($_GET['incomeType_Id']))? $_GET['incomeType_Id'] : 0;
-$note = (isset($_GET['note']))? $_GET['note'] : "";
 
-$incomeSubType = new IncomeSubType($id, $name,$amount,$incomeType_Id,$note);
+$incomeSubType = new IncomeSubType($id,$name,$incomeType_Id);
 $incomeSubTypeDB = new IncomeSubTypesDBAccess($budgetDBInfo,$dataMode,$incomeSubType);
 
 $crudResult = $incomeSubTypeDB->ManipulateData();
 
+session_start();
+$_SESSION['crudResult'] = $crudResult;
 switch($crudResult->dataMode){
     case "readOne":
         break;
     case "readAll":
         break;
     case "write":
+        if($crudResult->isComplete == FALSE){
+            header("location:../../../../datamanager/incomes/addeditIncomeSubType.php");
+        }else{
+            header("location:../../../../datamanager/incomes/incomeSubTypesDataManager.php");
+        }
         break;
     case "update":
         break;

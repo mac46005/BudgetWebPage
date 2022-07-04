@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <?php
-    require '../../script/php/dbAccess/models/incomeType.php';
+    require '../../script/php/dbAccess/models/incomeSubType.php';
     require '../../script/php/dbAccess/MySqliClasses.php';
     require '../../script/php/dbAccess/BudgetdbAccess.php';
     require '../../script/php/htmlProcessing/crudMessageBox.php';
@@ -87,7 +87,7 @@
                                     <td>$row[3]</td>
                                     <td>$row[4]</td>
                                     <td>$row[5]</td>
-                                    <td><a class="btn btn-edt" href="./addeditIncomeSubType.php?dataMode=edit&id=$row[0]">Edit</a></td>
+                                    <td><a class="btn btn-edt" href="./addeditIncomeSubType.php?dataMode=update&id=$row[0]">Edit</a></td>
                                     <td><a class="btn btn-dlt" href="../../script/php/dbAccess/controllers/incomeSubTypeDBController.php?dataMode=delete&id=$row[0]">Delete</a></td>
                                 </tr>
                                 ROW;

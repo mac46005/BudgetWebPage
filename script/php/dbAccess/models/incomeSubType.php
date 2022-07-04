@@ -20,7 +20,6 @@ class IncomeSubType{
         IncomeSubType
         id: $this->id
         name: $this->name
-        amount: $this->amount
         incomeType_Id: $this->incomeType_Id
         dateCreated: $this->dateCreated
         dateModified: $this->dateModified
