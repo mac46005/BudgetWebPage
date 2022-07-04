@@ -69,7 +69,31 @@
                     </thead>
                     <tbody>
                         <?php
-
+                        $incomeSubTypeDB = new IncomeSubTypesDBAccess($budgetDBInfo);
+                        $sql = <<<SQL
+                        SELECT ist.id , ist.name, it.id, it.name, ist.dateCreated, ist.dateModified
+                        FROM incomesubtypes ist
+                        INNER JOIN incometypes it ON ist.incomeType_Id = it.id
+                        SQL;
+                        $crudResult =  $incomeSubTypeDB->QuerySql($sql);
+                        if($crudResult->isComplete == FALSE){
+                            $crudMessageBox->CRUDMessageBox($crudResult);
+                        }else{
+                            while($row = $crudResult->dataObject->fetch_row()){
+                                $rowString = <<<ROW
+                                <tr>
+                                    <td>$row[0]</td>
+                                    <td>$row[1]</td>
+                                    <td>$row[3]</td>
+                                    <td>$row[4]</td>
+                                    <td>$row[5]</td>
+                                    <td><a class="btn btn-edt" href="./addeditIncomeSubType.php?dataMode=edit&id=$row[0]">Edit</a></td>
+                                    <td><a class="btn btn-dlt" href="../../script/php/dbAccess/controllers/incomeSubTypeDBController.php?dataMode=delete&id=$row[0]">Delete</a></td>
+                                </tr>
+                                ROW;
+                                echo $rowString;
+                            }
+                        }
                         ?>
                     </tbody>
                 </table>
