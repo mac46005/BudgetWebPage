@@ -18,7 +18,7 @@ $crudResult = $incomeSubTypeDB->ManipulateData();
 
 session_start();
 $_SESSION['crudResult'] = $crudResult;
-switch($crudResult->dataMode){
+switch($dataMode){
     case "readOne":
         break;
     case "readAll":
@@ -31,8 +31,14 @@ switch($crudResult->dataMode){
         }
         break;
     case "update":
+        if($crudResult->isComplete == FALSE){
+            header("location:../../../../datamanager/incomes/addeditIncomeSubType.php");
+        }else{
+            header("location:../../../../datamanager/incomes/incomeSubTypesDataManager.php");
+        }
         break;
     case "delete":
+        header("location:../../../../datamanager/incomes/incomeSubTypesDataManager.php");
         break;
 }
 ?>
